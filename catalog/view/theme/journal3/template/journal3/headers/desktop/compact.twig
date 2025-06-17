@@ -1,0 +1,121 @@
+<div class="header header-compact header-sm">
+	<div
+		class="top-bar navbar-nav">
+		{# {{ j3.settings.get('desktop_top_menu') }} #}
+
+		{% if j3.settings.get('langPosition') == 'top' %}
+			<div class="language-currency top-menu">
+				<div class="desktop-language-wrapper">
+					{{ language }}
+				</div>
+				<div class="desktop-currency-wrapper">
+					{{ currency }}
+				</div>
+			</div>
+		{% endif %}
+		{# <div class="third-menu">{{ j3.settings.get('desktop_top_menu_3') }}</div> #}
+		{% if j3.settings.get('secondaryMenuPosition') == 'top' %}
+			<div class="top-menu secondary-menu">{{ j3.settings.get('desktop_top_menu_2') }}</div>
+		{% endif %}
+	</div>
+	<div class="mid-bar navbar-nav">
+		<div class="desktop-logo-wrapper">
+			<div id="logo">
+				{% if j3.settings.get('logo_src') %}
+					<a href="{{ home }}">
+						<img src="{{ j3.settings.get('logo_src') }}" {% if j3.settings.get('logo2x_src') %} srcset="{{ j3.settings.get('logo_src') }} 1x, {{ j3.settings.get('logo2x_src') }} 2x" {% endif %} width="{{ j3.settings.get('logo_width') }}" height="{{ j3.settings.get('logo_height') }}" alt="{{ name }}" title="{{ name }}"/>
+					</a>
+				{% else %}
+					<h1>
+						<a href="{{ home }}">{{ name }}</a>
+					</h1>
+				{% endif %}
+			</div>
+		</div>
+
+
+		<div class="desktop-main-menu-wrapper navbar-nav">
+			<div id="main-menu" class="main-menu">
+
+				<div class="desktop-country-wrapper">
+					<div id="country" class="country">
+						<form action="{{country_action}}" method="post" enctype="multipart/form-data" id="form-country">
+							<div class="dropdown drop-menu">
+								<button type="button" class="dropdown-toggle" data-toggle="" aria-expanded="false" style="background-color: transparent; color: #FFF;margin-left: 20px;    margin-top: 0px;">
+									<span class="country-flag-title">
+										<span class="country-title">{{country_name}}</span>
+									</span>
+								</button>
+								<div class="dropdown-menu j-dropdown">
+									<ul class="j-menu" style="height: 600px; overflow-y:scroll;">
+										{% for country in countries_and_markets %}
+											<li>
+												<a class="country-select" name="{{ country.name }}">
+													<span class="country-title-dropdown">{{ country.name }}</span>
+												</a>
+											</li>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+							<input type="hidden" name="code" value="">
+							<input type="hidden" name="redirect" value="{{redirect}}">
+						</form>
+					</div>
+				</div>
+				{# <ul class="j-menu">
+					<li class="menu-item main-menu-item main-menu-item-1 multi-level drop-menu  first-dropdown">
+						<a>
+							<span class="links-text">{{country_name}}</span>
+						</a>
+					</li>
+				</ul> #}
+			
+				<div class="language-currency top-menu" style="margin-left: 18px;">
+					<div class="desktop-language-wrapper">
+						{{ language }}
+					</div>
+				</div>
+
+			</div>
+
+			
+
+		</div>
+
+
+		<div
+			class="desktop-main-menu-wrapper navbar-nav">{# {{ j3.document.hasClass('mobile-header-active') ? '' : j3.settings.get('desktop_main_menu') }} #}
+		</div>
+
+		<div class="header-cart-group">
+			{% if j3.settings.get('catalogSearchStatus') %}
+				<div class="desktop-search-wrapper mini-search">
+					{{ search }}
+				</div>
+			{% endif %}
+
+			{% if j3.settings.get('secondaryMenuPosition') == 'cart' %}
+				<div class="top-menu secondary-menu">{{ j3.settings.get('desktop_top_menu_2') }}</div>
+			{% endif %}
+
+			<div class="desktop-cart-wrapper">
+				{{ cart }}
+			</div>
+			{% if j3.settings.get('langPosition') == 'search' %}
+				<div class="language-currency top-menu">
+					{# <div class="desktop-currency-wrapper">
+						{{ currency }}
+					</div> #}
+					{# <div class="desktop-language-wrapper">
+						{{ language }}
+					</div> #}
+
+				</div>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="third-menu">{{ j3.settings.get('desktop_top_menu_3') }}</div>
+
+</div>

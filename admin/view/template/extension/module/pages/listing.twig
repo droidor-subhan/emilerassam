@@ -1,0 +1,167 @@
+{% block content %}
+  {{ header }}
+  {{ column_left }}
+
+  <div id="content">
+    <div class="page-header">
+      <div class="container-fluid">
+        <h1>Pages</h1>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+        {% if error_warning %}
+            <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+
+        {% if success %}
+            <div class="alert alert-success alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ success }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-pencil"></i> Pages </h3>
+        </div>
+        <div class="panel-body">
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Page Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>About Us</td>
+                        <td><a href="{{edit_about_us_page}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Shipping & Delivery</td>
+                        <td><a href="{{edit_shipping_delivery}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Returns & Refunds</td>
+                        <td><a href="{{edit_return_refund}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Privacy Notice</td>
+                        <td><a href="{{edit_privacy}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Terms & Conditions</td>
+                        <td><a href="{{edit_term_condition}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>FAQ</td>
+                        <td><a href="{{edit_faq}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Sustainability</td>
+                        <td><a href="{{edit_sustainability}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Clients</td>
+                        <td><a href="{{edit_clients}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Careers</td>
+                        <td>
+                            <a href="{{edit_careers}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                            <a href="{{listing_careers}}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Contact Us</td>
+                        <td>
+                            <a href="{{edit_contactus}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                            <a href="{{listing_contactus}}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>Holdings</td>
+                        <td>
+                            <a href="{{edit_holdings}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        function deleteSale(group_id) {
+            if(group_id && group_id != '' && group_id > 0) {
+                confirmation = confirm("Are you sure to remove the Icon?");
+                if( confirmation ) {
+                    $.ajax({
+                        url: 'index.php?route=extension/module/product_grouping/deleteGroupNameOptions&user_token={{ user_token }}',
+                        data:{"group_id":group_id},
+                        dataType: 'json',
+                        method:'POST',
+                        success: function(response) {
+                        }
+                    });
+                    location.reload();
+                }
+            }
+        }
+        function deleteGroupCollections(group_id) {
+            if(group_id && group_id != '' && group_id > 0) {
+                confirmation = confirm("Are you sure to remove the Collection?");
+                if( confirmation ) {
+                    $.ajax({
+                        url: 'index.php?route=extension/module/product_grouping/deleteGroupCollections&user_token={{ user_token }}',
+                        data:{"group_id":group_id},
+                        dataType: 'json',
+                        method:'POST',
+                        success: function(response) {
+                        }
+                    });
+                    location.reload();
+                }
+            }
+        }
+        $('#products-dropdown').select2({
+            theme: 'bootstrap',
+            placeholder: 'Search Products by Group Name'
+        });
+        function getFilteredGropCollections() {
+            var groupCollectionid = $("#products-dropdown option:selected").val();
+            $.ajax({
+                url: 'index.php?route=extension/module/product_grouping/filterCollectionProducts&user_token={{ user_token }}',
+                data: {"group_id": groupCollectionid},
+                method: 'POST',
+                success: function (response) {
+                    $("#collection_data_all").html(response);
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr + status + error);
+                }
+            });
+        }
+
+    </script>
+{{ footer }}
+{% endblock %}

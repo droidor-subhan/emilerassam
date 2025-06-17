@@ -1,0 +1,195 @@
+{% block content %}
+  {{ header }}
+  {{ column_left }}
+
+  <div id="content">
+    <div class="page-header">
+      <div class="container-fluid">
+        <div class="pull-right">
+          <a href="{{ add_new }}" data-toggle="tooltip" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+          <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+        </div>
+        <h1>{{ heading_title }}</h1>
+        <ul class="breadcrumb">
+          {% for breadcrumb in breadcrumbs %}
+            <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+        {% if error_warning %}
+            <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+
+        {% if success %}
+            <div class="alert alert-success alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ success }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+
+        <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-pencil"></i> Add a New Sale </h3>
+        </div>
+        <div class="panel-body">
+            <form action="{{ action }}" method="post" enctype="multipart/form-data" id="bulk_sale_option" class="form-horizontal">
+                <div class="form-group required" style="padding-bottom: 0;">
+                    <label class="col-sm-2 control-label" for="input-status">Select Products </label>
+                    <div class="col-sm-10">
+                        <select id="products-dropdown" name="product_id[]" multiple style="width: 100%;" class="form-control" required>
+                            {% for product in products %}
+                                <option value="{{ product.product_id }}">{{ product.name }} ({{ product.price }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" style="border-top: none; padding:0; margin-bottom: 10px;;">
+                    <label class="col-sm-2 control-label" for="input-status"></label>
+                    <div class="col-sm-10">
+                        <a id="toggle-select" href="javascript:void(0);" data-select-all="true">Select All Products</a>
+                    </div>
+                </div>
+
+                <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-start-date">Start Date</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="start_date" value="" placeholder="Start Date" id="input-start-date" class="form-control" required />
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-end-date">End Date</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="end_date" value="" placeholder="End Date" id="input-end-date" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-end-date">Discount Type</label>
+                    <div class="col-sm-10">
+                        <select name="discount_type" style="width: 100%;" class="form-control" required>
+                            <option value="">Select Discount Type</option>
+                            <option value="fixed">Fixed</option>
+                            <option value="percentage">Percentage</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-end-date">Discount Value</label>
+                    <div class="col-sm-10">
+                        <input type="number" min="0" name="discount_value" value="" placeholder="Dicount Value" id="input-discount-value" class="form-control" required />
+                    </div>
+                </div>
+                <input type="hidden" name="bulk_save_module" value="bulk_save_module" class="form-control" required />
+                <button type="submit" name="bulk_save" value="bulk_save" class="form-control btn btn-primary"> Add Sale </button>
+            </form>
+        </div>
+    </div>
+    </div>
+
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.css">
+
+
+    {# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" /> #}
+    {# <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> #}
+
+    <script>
+        $('#bulk_sale_option').on('submit', function(e) {
+            // Prevent form submission
+            e.preventDefault();
+
+            // Reset any previous error messages
+            $('.error-message').remove();
+
+            // Flag to track if form is valid
+            var isValid = true;
+
+            // Validate the date fields
+            if ($('#input-start-date').val() === '' || $('#input-end-date').val() === '') {
+                isValid = false;
+                // Append error message
+                $('<div class="error-message">Dates are required</div>').insertAfter('#input-end-date');
+            }
+
+            // Validate discount value
+            if ($('#input-discount-value').val() === '') {
+                isValid = false;
+                // Append error message
+                $('<div class="error-message">Discount value is required</div>').insertAfter('#input-discount-value');
+            }
+
+            // If form is valid, submit it
+            if (isValid) {
+                $(this).off('submit').submit();
+            }
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#products-dropdown').select2({
+                theme: 'bootstrap'  // Optional: if you included the Bootstrap theme CSS
+            });
+
+            $('#toggle-select').on('click', function() {
+                var selectAll = $(this).data('select-all');
+                if (selectAll) {
+                    // Select all options
+                    $('#products-dropdown').val($('#products-dropdown option').map(function() { return $(this).val(); }).get()).trigger('change');
+                    // Update button text and data
+                    $(this).text('Unselect All Products').data('select-all', false);
+                } else {
+                    // Unselect all options
+                    $('#products-dropdown').val([]).trigger('change');
+                    // Update button text and data
+                    $(this).text('Select All Products').data('select-all', true);
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var today = new Date();
+
+            $('#input-start-date').datetimepicker({
+                dateFormat: 'yy-mm-dd',
+                timeFormat: 'HH:mm:ss',
+                minDate: today,
+                onSelect: function(selectedDateTime) {
+                    console.log('Selected Start Date/Time: ', selectedDateTime);
+                    $('#input-end-date').datetimepicker('option', 'minDate', selectedDateTime);
+                }
+            });
+
+            $('#input-end-date').datetimepicker({
+                dateFormat: 'yy-mm-dd',
+                timeFormat: 'HH:mm:ss',
+                minDate: today,
+                onSelect: function(selectedDateTime) {
+                    console.log('Selected End Date/Time: ', selectedDateTime);
+                    $('#input-start-date').datetimepicker('option', 'maxDate', selectedDateTime);
+                }
+            });
+
+        });
+
+    </script>
+
+{{ footer }}
+{% endblock %}

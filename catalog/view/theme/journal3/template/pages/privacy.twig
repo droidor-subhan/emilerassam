@@ -1,0 +1,96 @@
+{{ header }}
+
+{# COMPANY SECTION STARTS HERE #}
+<style>
+.company_main_full_width_container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px 15px 0px 15px !important;
+    color: #fff;
+    text-align: center;
+    z-index: 1;
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+.company_main_full_width_container .bg-wrap {
+    clip: rect(0, auto, auto, 0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.company_main_full_width_container .bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("{{base_url}}{{content.company_image}}");
+    background-size: cover;
+    background-position: center 0px;
+    transform: translateZ(0);
+    will-change: transform;
+    z-index: -1;
+    background-repeat: no-repeat;
+}
+
+@media screen and (min-width: 1024px) {
+    .company_main_full_width_container .bg {
+        position: sticky;
+        height: 100vh;
+    }
+}
+@media screen and (max-width: 1023px) {
+		.company_main_full_width_container .bg {
+			background-image: url("{{base_url}}mobile_iomage.jpg");
+			height: 100vh;
+            background-position: center 80px;
+		}
+	}
+.company_main_full_width_container p {
+    color: #FFF;
+    font-size: 14px;
+    line-height: 17px;
+}
+.timeline_main_container {
+	margin: 0 auto;
+	max-width: 1024px;
+	width: 100%;
+}
+</style>
+
+{# <div style="padding: 20px 15px;">
+	<h1 class="title page-title">
+		<span>{{company_title}}</span>
+	</h1>
+	<div class="text-center">
+		<p class="text-center">{{content.description}}</p>
+		<p class="text-center">{{content.sub_description}}</p>
+	</div>
+</div> #}
+
+<div class="company_main_full_width_container">
+	<div class="bg-wrap">
+        <div class="bg"></div>
+    </div>
+
+    <div class="timeline_main_container">
+        {{content.sec_1_description}}
+
+        {{content.sec_2_description}}
+        
+        {{content.sec_3_description}}
+    </div>
+
+</div>
+{# COMPANY SECTION ENDS HERE #}
+
+{{ footer }}
+
+<script>
+    $(document).ready(function () {
+        document.title = "Emile Rassam | Privacy Notice";
+    });
+</script>

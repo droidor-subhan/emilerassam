@@ -1,0 +1,330 @@
+{{ header }}
+
+{# MILESTONE SECTION STARTS HERE #}
+<style>
+.milestone_main_full_width_container {
+    position: relative; /* Ensures content is positioned correctly */
+    width: 100%;
+    min-height: 100vh; /* Ensures the section takes at least the full viewport height */
+    color: #fff;
+    text-align: center;
+    z-index: 1;
+}
+/* Background wrapper with clipping for fixed background */
+.milestone_main_full_width_container .bg-wrap {
+    clip: rect(0, auto, auto, 0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Fixed background styling */
+.milestone_main_full_width_container .bg {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-image: url("{{base_url}}{{ content[0].pc_logo }}");
+    background-size: cover;
+    background-position: top;
+    transform: translateZ(0);
+    will-change: transform;
+    z-index: -1;
+    background-color: #DAD9DE;
+}
+	
+	@media screen and (max-width: 1023px) {
+		.milestone_main_full_width_container .bg {
+			{# background-image: url("{{base_url}}asset_14_landscape.png"); #}
+            background-image: none;
+			height: 100%;
+		}
+	}
+
+
+	.milestone_main_full_width_container {
+		color: #000;
+		font-size: 35px;
+	}
+
+	.timeline {
+		position: relative;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+	
+	/* Container around content */
+	.container {
+		padding: 0;
+		position: relative;
+		width: 50%;
+		margin-right: 0;
+		margin-left: 0;
+		color: #7c7c7c;
+		cursor: pointer;
+		font-size: 22px;
+	}
+  
+	/* Media queries - Responsive timeline on screens less than 600px wide */
+	@media screen and(max-width: 600px) {
+		.container {
+			width: 100%;
+			padding-left: 70px;
+			padding-right: 25px;
+		}
+		.container::before {
+			left: 60px;
+			border: medium solid white;
+			border-width: 10px 10px 10px 0;
+			border-color: transparent white transparent transparent;
+		}
+	}
+
+  .main_each_element h2 {
+    margin: 0;
+    padding: 0;
+    color: inherit;
+	font-size: inherit;
+  }
+  .main_each_element p {
+    margin: 0;
+    padding: 0;
+    line-height: 13px;
+    color: inherit;
+    font-size: 12px;
+  }
+    .timeline_main_container {
+        margin: 0 auto;
+        max-width: 650px;
+        width: 100%;
+        min-height: 1082px;
+        padding-bottom: 30px;
+        padding-top: 100px;
+    }
+.conten_container {
+    color: #6c6c6c;
+    font-size: 14px;
+    font-style: italic;
+}
+.main_contnet_paragrapg p, .p2 p {
+    line-height: 17px;
+}
+.main_contnet_paragrapg p, .main_contnet_paragrapg div {
+    text-align: justify;
+}
+.conten_container .p2 {
+    font-size: 14px;
+    line-height: 2px;
+    text-align: right;
+    font-style: normal;
+    font-weight: bold;
+    color: #7c7c7c;
+}
+.image_container img {
+    width: 100%;
+}
+</style>
+
+
+<div class="milestone_main_full_width_container">
+	<div class="bg-wrap">
+        <div class="bg"></div>
+    </div>
+
+	<div class="timeline_main_container">
+		<div class="timeline">
+    
+                {% for i in 1..7 %}
+                    <div class="row" style="padding:15px;">
+                        <div class="col-xs-12 col-sm-3 p-0 image_container">
+                            {% if content[(i-1)]['company_image'] is not empty %}
+                                <img src="{{ base_url }}{{content[(i-1)]['company_image']}}" height="150px" />
+                            {% endif %}
+                        </div>
+                        <div class="col-xs-12 col-sm-9 p-0 text-left conten_container">
+                            <div class="main_contnet_paragrapg">{{content[(i-1)]['sec_1_description']}}</div>
+                            <div class="p2">{{content[(i-1)]['sub_2_description']}}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+			
+		</div>
+	</div>
+</div>
+{# Milestone SECTION ENDS HERE #}
+
+{# <div style="height: 70px; background:#DAD9DE;"></div> #}
+
+{# MILESTONE SECTION STARTS HERE #}
+<style>
+.milestone_main_full_width_container_p2 {
+    position: relative; /* Ensures content is positioned correctly */
+    width: 100%;
+    min-height: 100vh; /* Ensures the section takes at least the full viewport height */
+    color: #fff;
+    text-align: center;
+    z-index: 1;
+    margin-bottom: 50px; /* Keep the margin as per your original requirement */
+}
+/* Background wrapper with clipping for fixed background */
+.milestone_main_full_width_container_p2 .bg-wrap {
+    clip: rect(0, auto, auto, 0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Fixed background styling */
+.milestone_main_full_width_container_p2 .bg {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-image: url("{{base_url}}{{ content[0].company_image_2 }}");
+    background-size: cover;
+    background-position: top;
+    transform: translateZ(0);
+    will-change: transform;
+    z-index: -1;
+         background-color: #DAD9DE;
+}
+	
+	@media screen and (max-width: 1023px) {
+		.milestone_main_full_width_container_p2 .bg {
+			background-image: url("{{base_url}}asset_14_wider_conv_mob.png");
+			height: 100%;
+		}
+	}
+
+
+	.milestone_main_full_width_container_p2 {
+		color: #000;
+		font-size: 35px;
+	}
+
+	.timeline {
+		position: relative;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+	
+	/* Container around content */
+	.container {
+		padding: 0;
+		position: relative;
+		width: 50%;
+		margin-right: 0;
+		margin-left: 0;
+		color: #7c7c7c;
+		cursor: pointer;
+		font-size: 22px;
+	}
+  
+	/* Media queries - Responsive timeline on screens less than 600px wide */
+	@media screen and(max-width: 600px) {
+		.container {
+			width: 100%;
+			padding-left: 70px;
+			padding-right: 25px;
+		}
+		.container::before {
+			left: 60px;
+			border: medium solid white;
+			border-width: 10px 10px 10px 0;
+			border-color: transparent white transparent transparent;
+		}
+	}
+
+  .main_each_element h2 {
+    margin: 0;
+    padding: 0;
+    color: inherit;
+	font-size: inherit;
+  }
+  .main_each_element p {
+    margin: 0;
+    padding: 0;
+    line-height: 13px;
+    color: inherit;
+    font-size: 12px;
+  }
+    .timeline_main_container_p2 {
+        margin: 40px auto;
+        max-width: 600px;
+        width: 100%;
+        min-height: 1082px;
+        padding-bottom: 30px;
+        padding-top: 100px;
+    }
+.conten_container {
+    color: #6c6c6c;
+    font-size: 14px;
+    font-style: italic;
+}
+.main_contnet_paragrapg p, .p2 p {
+    line-height: 17px;
+}
+.main_contnet_paragrapg p, .main_contnet_paragrapg div {
+    text-align: justify;
+}
+.conten_container .p2 {
+    font-size: 14px;
+    line-height: 2px;
+    text-align: right;
+    font-style: normal;
+    font-weight: bold;
+    color: #7c7c7c;
+}
+.image_container img {
+    width: 100%;
+}
+.each_image_container {
+	width: 100%;
+	height: 100px;
+}
+.col-xs-3.image_container {
+    height: 100px;
+    text-align: center;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.image_container img {
+    align-self: flex-end;
+    height: 100%;
+}
+</style>
+
+
+<div class="milestone_main_full_width_container_p2">
+	<div class="bg-wrap">
+        <div class="bg"></div>
+    </div>
+
+	<div class="timeline_main_container_p2">    
+        <div class="row" style="padding:15px;">
+            {% for item in contentLogo %}
+                <div class="col-xs-6 col-sm-3 p-1 image_container" style="margin-top: 15px;">
+                    {% if item.company_image is not empty %}
+                        <img src="{{ base_url ~ item.company_image }}" height="150px" />
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+	</div>
+</div>
+{# Milestone SECTION ENDS HERE #}
+{{ footer }}
+
+<script>
+    $(document).ready(function () {
+        document.title = "Emile Rassam | Clients";
+    });
+</script>

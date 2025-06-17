@@ -1,0 +1,200 @@
+{{ header }}
+
+{# COMPANY SECTION STARTS HERE #}
+<style>
+.company_main_full_width_container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px 15px 0px 15px !important;
+    color: #fff;
+    text-align: center;
+    z-index: 1;
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+.company_main_full_width_container .bg-wrap {
+    clip: rect(0, auto, auto, 0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.company_main_full_width_container .bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("{{base_url}}{{content.company_image}}");
+    background-size: cover;
+    background-position: center 0px;
+    transform: translateZ(0);
+    will-change: transform;
+    z-index: -1;
+    background-repeat: no-repeat;
+}
+
+@media screen and (min-width: 1024px) {
+    .company_main_full_width_container .bg {
+        position: sticky;
+        height: 100vh;
+    }
+}
+.company_main_full_width_container p {
+    color: #FFF;
+    font-size: 14px;
+    line-height: 17px;
+}
+.timeline_main_container {
+	margin: 0 auto;
+	max-width: 1024px;
+	width: 100%;
+    margin-bottom: 60px;
+}
+.each_container_form_elem {
+    display: flex;
+    justify-content: center;
+}
+.each_form_input_form {
+    
+}
+#message_bar {
+    display: none;
+    color: green;
+}
+</style>
+
+
+<div class="company_main_full_width_container">
+	<div class="bg-wrap">
+        <div class="bg"></div>
+    </div>
+
+    <div class="timeline_main_container">
+        {{content.sec_1_description}}
+        
+		<form action="{{ action }}" method="post" enctype="multipart/form-data" id="career_save" class="form-horizontal">
+
+            <div class="row">
+                <div class="input-group each_container_form_elem">
+                    <span class="input-group-addon">{{page_contact_us_name}}</span>
+                    <input type="text" name="sur_name" id="sur_name" class="form-control each_form_input_form" placeholder="{{page_contact_us_name_detail}}" required>
+                </div>
+
+                <div class="input-group each_container_form_elem">
+                    <span class="input-group-addon">{{page_contact_us_capacity}}</span>
+                    <input type="text" name="capacity" id="capacity" class="form-control each_form_input_form" placeholder="{{page_contact_us_capacity_detail}}" required>
+                </div>
+
+                <div class="input-group each_container_form_elem">
+                    <span class="input-group-addon">{{page_contact_us_phone}}</span>
+                    <input type="number" name="phone" id="phone" class="form-control each_form_input_form" placeholder="{{page_contact_us_phone_detail}}" required>
+                </div>
+
+                <div class="input-group each_container_form_elem">
+                    <span class="input-group-addon">{{page_contact_us_country}}</span>
+                    <input type="text" name="usa" id="usa" class="form-control each_form_input_form" placeholder="{{page_contact_us_country_detail}}" required>
+                </div>
+
+                <div class="input-group each_container_form_elem">
+                    <span class="input-group-addon">{{page_contact_us_email}}</span>
+                    <input type="email" name="email" id="email" class="form-control each_form_input_form" placeholder="{{page_contact_us_email_detail}}" required>
+                </div>
+
+                <div class="input-group each_container_form_elem">
+                    <span class="input-group-addon">{{page_contact_us_message}}</span>
+                    <input type="text" name="message" id="message" class="form-control each_form_input_form" placeholder="{{page_contact_us_message_detail}}" maxlength="150" required>
+                </div>
+
+
+                
+                <div class="input-group each_container_form_elem"  id="message_bar" style="width:209px;margin:35px auto;">
+                    <p>{{form_submit_text_career_contact}}</p>
+                </div>
+                
+                <div class="input-group each_container_form_elem" style="width:209px;margin:35px auto;">
+                    <input type="submit" id="submit_form_btn"  style="display:block;" class="form-control" value="{{page_contact_us_message_request}}">
+                </div>
+
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+<style>
+.input-group-addon {
+    color: #000000;
+    background-color: #ffffffd1;
+    text-align: left;
+    padding: 15px 15px;
+    margin: 1px;
+    border: 0 !important;
+    border-radius: 0;
+}
+.input-group-addon, .input-group-btn {
+    width: 170px;
+    border: 0 !important;
+    height: 50px;
+    margin-right: 2px;
+    line-height: 24px;
+}
+.input-group input.form-control {
+    height: 50px;
+}
+input.form-control {
+    max-width: 330px;
+}
+.input-group .form-control {
+    width: 370px;
+    background-color: #ffffffd1;
+}
+input.each_form_input_form {
+    background-color: #ffffffd1 !important;
+}
+</style>
+{# COMPANY SECTION ENDS HERE #}
+
+{{ footer }}
+
+<script>
+$(document).ready(function() {
+    $('#career_save').on('submit', function(event) {
+        event.preventDefault();
+        let formData = $(this).serialize();
+
+        $("#submit_form_btn").attr('disabled', true);
+        $.ajax({
+            url: 'index.php?route=pages/contact/submit_career_form',
+            data: formData,
+            method:'POST',
+            success: function(response) {
+                if( response == 2 ) {
+                    alert("Email is already registered. Please use a different email.");
+                } else {
+                    {# alert("{{form_submit_text_career_contact}}"); #}
+                    $("#message_bar").show(700);
+                    $("#message_bar p").html("{{form_submit_text_career_contact}}");
+                    
+                    $("#sur_name").val("");
+                    $("#capacity").val("");
+                    $("#phone").val("");
+                    $("#usa").val("");
+                    $("#email").val("");
+                    $("#message").val("");
+                    $("#submit_form_btn").attr('disabled', false);
+                }
+            }
+        });
+    });
+});
+</script>
+<script>
+    $(document).ready(function () {
+        document.title = "Emile Rassam | Contact Us";
+    });
+</script>

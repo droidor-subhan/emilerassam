@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTDHTML4.01//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/strict.dtd">
+<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+   </head>
+	<body style="margin: 0; padding: 0;">
+
+		<div id="email-container" style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border: 4px solid #cccccc52;">
+
+            <a href="http://testing.emilerassam.com" title="Willowaubrey" style="text-align: center;margin: 0 auto;display: block;"><img src="http://testing.emilerassam.com/image/cache/catalog/custom/logo_black-300x23.png" alt="Willowaubrey"/></a>
+
+			<table style="border-collapse: collapse; border: 1px solid #ddd;">
+				<thead>
+					<tr>
+                        <td style="background-color: black; color: white; font-weight: bold; padding: 13px; border-bottom: 1px solid #ddd; text-align: center; border-right: 1px solid #fff; font-size: 18px;" colspan="2">Order Status Updated</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td width="50%" style="border-bottom: 2px solid #ddd; border-right: 2px solid #ddd; padding: 10px; color: #000; font-size: 14px;"><strong>{{ text_order_id }}</strong></td>
+						<td width="50%" style="border-bottom: 2px solid #ddd; border-right: 2px solid #ddd; padding: 10px; color: #000; font-size: 14px;">{{ order_id }}</td>
+					</tr>
+                    <tr>
+						<td style="border-bottom: 2px solid #ddd; border-right: 2px solid #ddd; padding: 10px; color: #000; font-size: 14px;"><strong>{{ text_date_added }}</strong></td>
+						<td style="border-bottom: 2px solid #ddd; border-right: 2px solid #ddd; padding: 10px; color: #000; font-size: 14px;">{{ date_added }}</td>
+					</tr>
+                    <tr>
+						<td style="border-bottom: 2px solid #ddd; border-right: 2px solid #ddd; padding: 10px; color: #000; font-size: 14px;"><strong>{{ text_order_status }}</strong></td>
+						<td style="border-bottom: 2px solid #ddd; border-right: 2px solid #ddd; padding: 10px;    color: green; font-size: 18px; font-weight: bold;">{{ order_status }}</td>
+					</tr>
+                    {% if link %}
+                        <tr>
+                            <td style="border-bottom: 2px solid #ddd; border-right: 2px solid #ddd; padding: 10px; color: #000; font-size: 14px;"><strong>{{ text_link }}</strong></td>
+                            <td style="border-bottom: 2px solid #ddd; border-right: 2px solid #ddd; padding: 10px; color: #000; font-size: 14px;">
+                                <a href="{{ link }}" target="_blank" style="color: #4285f4; text-decoration: none; font-weight: normal; display: inline-block;">{{ link }}</a>
+                            </td>
+                        </tr>
+                    {% endif %}
+
+                    {% if comment %}
+                        <tr>
+                            <td style="border-bottom: 2px solid #ddd; border-right: 2px solid #ddd; padding: 10px; color: #000; font-size: 14px;">
+                                <strong>{{ text_comment }}</strong>
+                            </td>
+                            <td style="border-bottom: 2px solid #ddd; border-right: 2px solid #ddd; padding: 10px; color: #000; font-size: 14px;">{{ comment }}</td>
+                        </tr>
+                    {% endif %}
+                    
+				</tbody>
+			</table>
+
+			<div class="footer" style="margin-top: 20px; color: #888;">
+				<p>{{ text_footer }}</p>
+			</div>
+
+		</div>
+	</body>
+</html>

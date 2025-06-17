@@ -1,0 +1,200 @@
+{% block content %}
+  {{ header }}
+  {{ column_left }}
+
+  <div id="content">
+    <div class="page-header">
+      <div class="container-fluid">
+        <h1>{{ heading_title }}</h1>
+        <ul class="breadcrumb">
+          {% for breadcrumb in breadcrumbs %}
+            <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+        {% if error_warning %}
+            <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+
+        {% if success %}
+            <div class="alert alert-success alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ success }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-pencil"></i> Product Icons </h3>
+        </div>
+        <div class="panel-body">
+
+            <ul class="nav nav-tabs" id="myTabs">
+                <li class="active"><a data-toggle="tab" href="#tab1">Product Icons</a></li>
+                <li><a data-toggle="tab" href="#tab2">Products & Icons Linking</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab1" class="tab-pane fade in active">
+
+                    <div class="float-right text-right" style="margin-bottom:10px;">
+                        <a href="{{add_new_group_url}}" class="btn btn-success">Add new Icon</a>
+                    </div>
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Icon Title/Name</th>
+                                <th>Icon Image</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in listingData %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ row.name }}</td>
+                                    <td>
+                                        {% if row.icon_image is not empty %}
+                                            <img src="{{base_url}}{{ row.icon_image }}" height="70px"/>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ row.description }}</td>
+                                    <td>
+                                        <a href="{{edit_group_url_group}}&id={{row.id}}" class="btn btn-primary" data-saleid="{{row.id}}"><i class="fa fa-pencil"></i></a>
+                                        <a href="javascript:void(0);" onclick="deleteSale('{{row.id}}')" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+                <div id="tab2" class="tab-pane fade">
+
+                    <style>
+                    .select2-container .select2-selection--single {
+                            height: 35px !important;
+                    }
+                    </style>
+                    <div class="float-right text-right" style="margin-bottom:10px;">
+                        <a href="{{add_new_group_url_product_collection}}" class="btn btn-success">Attach Icon to Product</a>
+
+                            {# <div class="col-sm-4" style="padding-left: 0px; margin-left:0px;">
+<select id="products-dropdown" name="product_id" style="width: 100%;" class="form-control" onchange="getFilteredGropCollections();">
+                                <option value="">Search Collection/Group Products</option>
+                                <option value="all">All Collection/Group Data</option>
+                                    {% for groupname in groupNames %}
+                                        <option value="{{ groupname.id }}">{{ groupname.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div> #}
+                        
+                    </div>
+
+                    
+                    
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Icon Title/Name</th>
+                                <th>Language</th>
+                                <th>Products</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="collection_data_all">
+                            {% for row in collectionListingData %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ row.group_name }}</td>
+                                <td>
+                                    {% if row.language_id == 4 %}
+                                        French
+                                    {% else %}
+                                        English
+                                    {% endif %}
+                                </td>
+                                <td>{{ row.products }}</td>
+                                <td>
+                                    <a href="{{edit_group_url}}&id={{row.id}}" class="btn btn-primary" data-saleid="{{row.id}}"><i class="fa fa-pencil"></i></a>
+                                    <a href="javascript:void(0);" onclick="deleteGroupCollections('{{row.id}}')" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        function deleteSale(group_id) {
+            if(group_id && group_id != '' && group_id > 0) {
+                confirmation = confirm("Are you sure to remove the Icon?");
+                if( confirmation ) {
+                    $.ajax({
+                        url: 'index.php?route=extension/module/product_grouping/deleteGroupNameOptions&user_token={{ user_token }}',
+                        data:{"group_id":group_id},
+                        dataType: 'json',
+                        method:'POST',
+                        success: function(response) {
+                        }
+                    });
+                    location.reload();
+                }
+            }
+        }
+        function deleteGroupCollections(group_id) {
+            if(group_id && group_id != '' && group_id > 0) {
+                confirmation = confirm("Are you sure to remove the Collection?");
+                if( confirmation ) {
+                    $.ajax({
+                        url: 'index.php?route=extension/module/product_grouping/deleteGroupCollections&user_token={{ user_token }}',
+                        data:{"group_id":group_id},
+                        dataType: 'json',
+                        method:'POST',
+                        success: function(response) {
+                        }
+                    });
+                    location.reload();
+                }
+            }
+        }
+        $('#products-dropdown').select2({
+            theme: 'bootstrap',
+            placeholder: 'Search Products by Group Name'
+        });
+
+        
+
+        function getFilteredGropCollections() {
+            var groupCollectionid = $("#products-dropdown option:selected").val();
+            $.ajax({
+                url: 'index.php?route=extension/module/product_grouping/filterCollectionProducts&user_token={{ user_token }}',
+                data: {"group_id": groupCollectionid},
+                method: 'POST',
+                success: function (response) {
+                    $("#collection_data_all").html(response);
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr + status + error);
+                }
+            });
+        }
+
+    </script>
+{{ footer }}
+{% endblock %}

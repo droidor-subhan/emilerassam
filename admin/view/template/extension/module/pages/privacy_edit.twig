@@ -1,0 +1,405 @@
+{% block content %}
+	{{ header }}
+	{{ column_left }}
+
+	<div id="content">
+
+		
+
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="pull-right">
+					<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default">
+						<i class="fa fa-reply"></i>
+					</a>
+				</div>
+				<h1>Returns & Refunds Edit</h1>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<i class="fa fa-pencil"></i>
+						Edit
+					</h3>
+				</div>
+				<div class="panel-body">
+
+
+					<form action="{{ action }}" method="post" enctype="multipart/form-data" id="bulk_sale_option" class="form-horizontal">
+
+						<ul class="nav nav-tabs">
+							<li class="active">
+								<a data-toggle="tab" href="#english">English</a>
+							</li>
+							<li>
+								<a data-toggle="tab" href="#french">French</a>
+							</li>
+						</ul>
+
+						<div class="tab-content">
+							{# ENGLISH VERSION STARTS HERE #}
+								<div id="english" class="tab-pane fade in active">
+									<div class="panel-group" id="accordion">
+										{# COMPANY SECTION STARTS HERE #}
+											<div class="panel panel-default">
+												{# <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#CompanyEng" style="cursor: pointer;">
+													<h4 class="panel-title">COMPANY SECTION</h4>
+												</div> #}
+												<div id="CompanyEng" class="panel-collapse collapse in">
+													<div class="panel-body">
+														
+                                                        <div class="form-group">
+															<label class="col-sm-2 control-label" for="input-end-date">Background Image</label>
+															<div class="col-sm-10">
+																<div id="company_upload_file_container" style="margin-bottom: 20px;">
+																	{% if data_eng.company_image is not empty %}
+																	<a href="{{base_url}}{{ data_eng.company_image }}" target="_blank">
+																		<img src="{{base_url}}{{ data_eng.company_image }}" height="150px"/>
+																	</a>
+																	{% endif %}
+																</div>
+																<input type="file" name="company_image" id="company_image"/>
+																<p style="color: red; font-weight:bold;">Allowed Extension: JPG, JPEG, PNG</p>
+																<p style="color: red; font-weight:bold;">Max file upload: 15MB</p>
+															</div>
+														</div>
+
+														<div class="form-group">
+															<label class="col-sm-2 control-label" for="input-end-date">Description</label>
+															<div class="col-sm-10">
+																<textarea data-toggle="summernote" name="section_1_description" id="section_1_description" class="form-control">{{data_eng.sec_1_description}}</textarea>
+															</div>
+														</div>
+
+													</div>
+												</div>
+											</div>
+										{# COMPANY SECTION ENDS HERE #}
+									</div>
+								</div>
+							{# ENGLISH VERSION ENDS HERE #}
+
+							{# FRENCH VERSION STARTS HERE #}
+								<div id="french" class="tab-pane fade">
+										{# COMPANY SECTION STARTS HERE #}
+											<div class="panel panel-default">
+												<div id="CompanyFr" class="panel-collapse collapse in">
+													<div class="panel-body">
+														
+														<div class="form-group">
+															<label class="col-sm-2 control-label" for="input-end-date">Background Image</label>
+															<div class="col-sm-10">
+																<div id="company_upload_file_container_fr" style="margin-bottom: 20px;">
+																	{% if data_fr.company_image is not empty %}
+                                                                        <a href="{{base_url}}{{ data_fr.company_image }}" target="_blank">
+                                                                            <img src="{{base_url}}{{ data_fr.company_image }}" height="150px"/>
+                                                                        </a>
+																	{% endif %}
+																</div>
+																<input type="file" name="company_image_fr" id="company_image_fr"/>
+																<p style="color: red; font-weight:bold;">Allowed Extension: JPG, JPEG, PNG</p>
+																<p style="color: red; font-weight:bold;">Max file upload: 15MB</p>
+															</div>
+														</div>
+
+														<div class="form-group">
+															<label class="col-sm-2 control-label" for="input-end-date">Description</label>
+															<div class="col-sm-10">
+																<textarea data-toggle="summernote" name="section_1_description_fr" id="section_1_description_fr" class="form-control">{{data_fr.sec_1_description}}</textarea>
+															</div>
+														</div>
+
+													</div>
+												</div>
+											</div>	
+										{# COMPANY SECTION ENDS HERE #}
+								</div>
+							{# FRENCH VERSION ENDS HERE #}
+						</div>
+
+
+					
+						<div style="display: flex;justify-content: center;align-items: center;">
+							<button type="submit" style="width:40%;" name="bulk_save" value="bulk_save" class="form-control btn btn-primary">
+								Update Page Content.
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		{{ footer }}
+	{% endblock %}
+
+
+<script>
+		$(document).ready(function() {
+			$('#image').change(function(e) {
+				 var fileInput = $(this);
+	        var file = e.target.files[0];
+	
+	        if (!file) {
+	            return;
+	        }
+	
+	        var allowedExtensions = ["png", "jpeg", "jpg"];
+	        var fileExtension = file.name.split('.').pop().toLowerCase();
+	
+	        if (allowedExtensions.indexOf(fileExtension) === -1) {
+	            alert("Please select a PNG, JPEG, or JPG file.");
+	            fileInput.val('');
+	            return;
+	        }
+	
+	        if (file.size > 15 * 1024 * 1024) {
+	            alert("The file is too large. Please select a file that is 15MB or smaller.");
+	            fileInput.val('');
+	            return;
+	        }
+	
+	        // Display the uploaded image
+	        var reader = new FileReader();
+	
+	        reader.onload = function(e) {
+	            // Create an <img> element and set its source and dimensions
+	            var imgElement = $('<img>')
+	                .attr('src', e.target.result)
+	                .attr('alt', 'Uploaded Image')
+	                .css({ 'max-height': '70px' }); // Set maximum dimensions
+	
+	            // Append the image to the container
+	            $('#upload_file_container').empty().html(imgElement);
+	        };
+	
+	        // Read the file as a data URL
+	        reader.readAsDataURL(file);
+			});
+
+
+
+			$('#image_fr').change(function(e) {
+				 var fileInput = $(this);
+	        var file = e.target.files[0];
+	
+	        if (!file) {
+	            return;
+	        }
+	
+	        var allowedExtensions = ["png", "jpeg", "jpg"];
+	        var fileExtension = file.name.split('.').pop().toLowerCase();
+	
+	        if (allowedExtensions.indexOf(fileExtension) === -1) {
+	            alert("Please select a PNG, JPEG, or JPG file.");
+	            fileInput.val('');
+	            return;
+	        }
+	
+	        if (file.size > 15 * 1024 * 1024) {
+	            alert("The file is too large. Please select a file that is 15MB or smaller.");
+	            fileInput.val('');
+	            return;
+	        }
+	
+	        // Display the uploaded image
+	        var reader = new FileReader();
+	
+	        reader.onload = function(e) {
+	            // Create an <img> element and set its source and dimensions
+	            var imgElement = $('<img>')
+	                .attr('src', e.target.result)
+	                .attr('alt', 'Uploaded Image')
+	                .css({ 'max-height': '70px' }); // Set maximum dimensions
+	
+	            // Append the image to the container
+	            $('#upload_file_container_fr').empty().html(imgElement);
+	        };
+	
+	        // Read the file as a data URL
+	        reader.readAsDataURL(file);
+			});
+
+
+
+			$('#company_image').change(function(e) {
+				 var fileInput = $(this);
+	        var file = e.target.files[0];
+	
+	        if (!file) {
+	            return;
+	        }
+	
+	        var allowedExtensions = ["png", "jpeg", "jpg"];
+	        var fileExtension = file.name.split('.').pop().toLowerCase();
+	
+	        if (allowedExtensions.indexOf(fileExtension) === -1) {
+	            alert("Please select a PNG, JPEG, or JPG file.");
+	            fileInput.val('');
+	            return;
+	        }
+	
+	        if (file.size > 15 * 1024 * 1024) {
+	            alert("The file is too large. Please select a file that is 15MB or smaller.");
+	            fileInput.val('');
+	            return;
+	        }
+	
+	        // Display the uploaded image
+	        var reader = new FileReader();
+	
+	        reader.onload = function(e) {
+	            // Create an <img> element and set its source and dimensions
+	            var imgElement = $('<img>')
+	                .attr('src', e.target.result)
+	                .attr('alt', 'Uploaded Image')
+	                .css({ 'max-height': '70px' }); // Set maximum dimensions
+	
+	            // Append the image to the container
+	            $('#company_upload_file_container').empty().html(imgElement);
+	        };
+	
+	        // Read the file as a data URL
+	        reader.readAsDataURL(file);
+			});
+
+
+
+			$('#company_image_fr').change(function(e) {
+				 var fileInput = $(this);
+	        var file = e.target.files[0];
+	
+	        if (!file) {
+	            return;
+	        }
+	
+	        var allowedExtensions = ["png", "jpeg", "jpg"];
+	        var fileExtension = file.name.split('.').pop().toLowerCase();
+	
+	        if (allowedExtensions.indexOf(fileExtension) === -1) {
+	            alert("Please select a PNG, JPEG, or JPG file.");
+	            fileInput.val('');
+	            return;
+	        }
+	
+	        if (file.size > 15 * 1024 * 1024) {
+	            alert("The file is too large. Please select a file that is 15MB or smaller.");
+	            fileInput.val('');
+	            return;
+	        }
+	
+	        // Display the uploaded image
+	        var reader = new FileReader();
+	
+	        reader.onload = function(e) {
+	            // Create an <img> element and set its source and dimensions
+	            var imgElement = $('<img>')
+	                .attr('src', e.target.result)
+	                .attr('alt', 'Uploaded Image')
+	                .css({ 'max-height': '70px' }); // Set maximum dimensions
+	
+	            // Append the image to the container
+	            $('#company_upload_file_container_fr').empty().html(imgElement);
+	        };
+	
+	        // Read the file as a data URL
+	        reader.readAsDataURL(file);
+			});
+
+
+			$('#milestone_image').change(function(e) {
+				 var fileInput = $(this);
+	        var file = e.target.files[0];
+	
+	        if (!file) {
+	            return;
+	        }
+	
+	        var allowedExtensions = ["png", "jpeg", "jpg"];
+	        var fileExtension = file.name.split('.').pop().toLowerCase();
+	
+	        if (allowedExtensions.indexOf(fileExtension) === -1) {
+	            alert("Please select a PNG, JPEG, or JPG file.");
+	            fileInput.val('');
+	            return;
+	        }
+	
+	        if (file.size > 15 * 1024 * 1024) {
+	            alert("The file is too large. Please select a file that is 15MB or smaller.");
+	            fileInput.val('');
+	            return;
+	        }
+	
+	        // Display the uploaded image
+	        var reader = new FileReader();
+	
+	        reader.onload = function(e) {
+	            // Create an <img> element and set its source and dimensions
+	            var imgElement = $('<img>')
+	                .attr('src', e.target.result)
+	                .attr('alt', 'Uploaded Image')
+	                .css({ 'max-height': '70px' }); // Set maximum dimensions
+	
+	            // Append the image to the container
+	            $('#milestone_upload_file_container').empty().html(imgElement);
+	        };
+	
+	        // Read the file as a data URL
+	        reader.readAsDataURL(file);
+			});
+
+
+
+			$('#milestone_image_fr').change(function(e) {
+			var fileInput = $(this);
+	        var file = e.target.files[0];
+	
+	        if (!file) {
+	            return;
+	        }
+	
+	        var allowedExtensions = ["png", "jpeg", "jpg"];
+	        var fileExtension = file.name.split('.').pop().toLowerCase();
+	
+	        if (allowedExtensions.indexOf(fileExtension) === -1) {
+	            alert("Please select a PNG, JPEG, or JPG file.");
+	            fileInput.val('');
+	            return;
+	        }
+	
+	        if (file.size > 15 * 1024 * 1024) {
+	            alert("The file is too large. Please select a file that is 15MB or smaller.");
+	            fileInput.val('');
+	            return;
+	        }
+	
+	        // Display the uploaded image
+	        var reader = new FileReader();
+	
+	        reader.onload = function(e) {
+	            // Create an <img> element and set its source and dimensions
+	            var imgElement = $('<img>')
+	                .attr('src', e.target.result)
+	                .attr('alt', 'Uploaded Image')
+	                .css({ 'max-height': '70px' }); // Set maximum dimensions
+	
+	            // Append the image to the container
+	            $('#milestone_upload_file_container_fr').empty().html(imgElement);
+	        };
+	
+	        // Read the file as a data URL
+	        reader.readAsDataURL(file);
+			});
+
+
+
+			
+		});
+	</script>
+
+	<script type="text/javascript" src="view/javascript/summernote/summernote.min.js"></script>
+	<link href="view/javascript/summernote/summernote.min.css" rel="stylesheet"/>
+	<script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
+	<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>

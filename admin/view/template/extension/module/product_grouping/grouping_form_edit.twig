@@ -1,0 +1,121 @@
+{% block content %}
+	{{ header }}
+	{{ column_left }}
+
+	<div id="content">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="pull-right">
+					<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default">
+						<i class="fa fa-reply"></i>
+					</a>
+				</div>
+				<h1>{{ heading_title }}</h1>
+				<ul class="breadcrumb">
+					{% for breadcrumb in breadcrumbs %}
+						<li>
+							<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<i class="fa fa-pencil"></i>
+						Edit Icon Title/Name
+					</h3>
+				</div>
+				<div class="panel-body">
+					<form action="{{ action }}" method="post" enctype="multipart/form-data" id="bulk_sale_option" class="form-horizontal">
+						<div class="form-group required">
+							<label class="required col-sm-2 control-label" for="input-end-date">Icon Title/Name</label>
+							<div class="col-sm-10">
+								<input type="hidden" name="group_id" value="{{group_id}}"/>
+								<input type="text" name="group_name" value="{{group_name}}" placeholder="Icon Title/Name(DONOTBLEACH, WASHT40, LYCRA, CORDURA, ETC)" class="form-control" required/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label" for="input-end-date">Upload Icon</label>
+							<div class="col-sm-10">
+								<div id="upload_file_container" style="margin-bottom: 20px;">
+									{% if icon_image is not empty %}
+										<img src="{{base_url}}{{ icon_image }}" height="70px"/>
+									{% endif %}
+								</div>
+								<input type="file" name="product_pdf" id="product_pdf"/>
+								<p style="color: red; font-weight:bold;">Allowed Extension: JPG, JPEG, PNG</p>
+								<p style="color: red; font-weight:bold;">Max file upload: 15MB</p>
+							</div>
+						</div>
+
+						<div class="required form-group">
+							<label class="required col-sm-2 control-label" for="input-end-date">Icon Description</label>
+							<div class="col-sm-10">
+								<textarea name="icon_description" id="icon_description" class="form-control" style="height:110px;" required>{{description}}</textarea>
+							</div>
+						</div>
+
+
+						<div style="display: flex;justify-content: center;align-items: center;">
+							<button type="submit" style="width:40%;" name="bulk_save" value="bulk_save" class="form-control btn btn-primary">
+								Update Icon
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		{{ footer }}
+	{% endblock %}
+
+
+<script>
+		$(document).ready(function() {
+			$('#product_pdf').change(function(e) {
+				 var fileInput = $(this);
+	        var file = e.target.files[0];
+	
+	        if (!file) {
+	            return;
+	        }
+	
+	        var allowedExtensions = ["png", "jpeg", "jpg"];
+	        var fileExtension = file.name.split('.').pop().toLowerCase();
+	
+	        if (allowedExtensions.indexOf(fileExtension) === -1) {
+	            alert("Please select a PNG, JPEG, or JPG file.");
+	            fileInput.val('');
+	            return;
+	        }
+	
+	        if (file.size > 15 * 1024 * 1024) {
+	            alert("The file is too large. Please select a file that is 15MB or smaller.");
+	            fileInput.val('');
+	            return;
+	        }
+	
+	        // Display the uploaded image
+	        var reader = new FileReader();
+	
+	        reader.onload = function(e) {
+	            // Create an <img> element and set its source and dimensions
+	            var imgElement = $('<img>')
+	                .attr('src', e.target.result)
+	                .attr('alt', 'Uploaded Image')
+	                .css({ 'max-height': '70px' }); // Set maximum dimensions
+	
+	            // Append the image to the container
+	            $('#upload_file_container').empty().html(imgElement);
+	        };
+	
+	        // Read the file as a data URL
+	        reader.readAsDataURL(file);
+			});
+		});
+		</script>

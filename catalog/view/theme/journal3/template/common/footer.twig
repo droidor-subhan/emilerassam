@@ -1,0 +1,546 @@
+{% if j3 is not defined %}
+  <style>
+    body {
+      display: none !important;
+    }
+  </style>
+  <script>
+    window.location = 'index.php?route=journal3/startup/error';
+  </script>
+{% endif %}
+{{ j3.loadController('journal3/layout', 'bottom') }}
+
+{% if not j3.document.isPopup() %}
+
+<footer>
+  {{ footer_menu }}
+</footer>
+
+{% endif %}
+</div><!-- .site-wrapper -->
+
+{{ j3.loadController('journal3/layout', 'bottom_menu') }}
+
+{{ j3.loadController('journal3/layout', 'side_menu') }}
+
+{{ j3.loadController('journal3/layout', 'notification') }}
+
+{% for script in j3.document.getScripts('footer') %}
+<script src="{{ j3.document.staticUrl(script, false) }}" {% if j3.settings.get('performanceJSDefer') %} defer {% endif %}></script>
+{% endfor %}
+
+{% if j3.settings.get('customJS') %}
+<script type="text/javascript">{{ j3.settings.get('customJS') }}</script>
+{% endif %}
+
+{% if not j3.document.isPopup() and j3.settings.get('customCodeFooter') %}
+{{ j3.settings.get('customCodeFooter') }}
+{% endif %}
+
+{% if not j3.document.isPopup() and j3.settings.get('scrollTop') %}
+<div class="scroll-top">
+  <i class="fa fa-angle-up"></i>
+</div>
+{% endif %}
+
+<div class="modal fade" id="shippingModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{{text_shipping_info}}</h4>
+            </div>
+            <div class="modal-body">
+                <p class="we_do_not_ship_text">{{do_not_ship_text_info}}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="donotshowagain">{{do_not_show_again_info}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="currency_country_modal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            {# <div class="modal-header">
+                <p style="padding-top: 14px; font-size: 18px;" class="text-center">{{ccl_choose_country_language}}</p>
+            </div> #}
+            <div class="modal-body" style="padding: 30px; background: #FFF;">
+                <div class="row" style="text-align: center;">
+                    <p style="font-size: 18px;" class="text-center">{{ccl_choose_country_language}}</p>
+                </div>
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-sm-6 col-xs-12 select_country">
+                        <label>{{ccl_select_country}}</label>
+                        <select name="country_id_user_selection" id="country_id_user_selection" class="form-control">
+                            {% for country in countries_list %}
+                                <option value="{{ country.name }}" 
+                                    {% if country.country_id == country_id %} selected {% endif %}>
+                                    {{ country.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <label>{{ccl_select_language}}</label>
+                        <select name="language_id_user_selection" id="language_id_user_selection" class="form-control">
+                            <option value="en-gb" {% if currency_code == "en-gb" %} selected {% endif %}> English </option>
+                            <option value="fr-FR" {% if language_code == "fr-FR" %} selected {% endif %}> French </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 30px; text-align: center;">
+                    <button type="button" class="btn btn-default" id="confirm_countr_languagu" onclick="userChangedCountryLanguageDefaultPopup()" style="width: 100%;">{{ccl_confirm_btn_text}}</button>
+                </div>
+            </div>
+
+            {# <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="confirm_countr_languagu" onclick="userChangedCountryLanguageDefaultPopup()">{{ccl_confirm_btn_text}}</button>
+            </div> #}
+        </div>
+    </div>
+</div>
+
+<form action="javascript:void(0);" method="post" enctype="multipart/form-data" id="subscribe_newsletter" class="form-horizontal">
+    <div class="modal fade" id="be_the_first_to_know" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog  modal-sm">
+            <div class="modal-content  modal-sm">
+                <div class="modal-body" style="background: #FFF; display: flex;flex-flow: column;justify-content: center;align-items:center;">
+
+                        <div class="row" style="text-align: center;">
+                            <p class="text-center" style="display:inline-block;border-bottom:1px solid #000;font-size:22px;margin-bottom:8px;">{{btftok_heading}}</p>
+                            <p style="font-size:14px;line-height:17px;max-width: 300px;width: 100%;" class="text-center">{{btftok_description}}</p>
+                        </div>
+                    
+                        <input class="form-control" name="country_id_user_selection" id="country_id_user_selection_main" type="email" style="max-width: 300px;width: 100%;margin: 10px 10px;text-align: center;font-size: 12px !important;color: #000 !important;border: 1px solid #000 !important;" placeholder="{{btftok_email_address}}" style="text-align:center;" required="required" />
+                        
+
+                        <button type="submit" class="btn btn-default" id="confirm_countr_languagu" style="max-width: 300px;width: 100%;height: 31px;border-radius: 0 !important;" style="width: 100%;">{{btftok_submit}}</button>
+
+                        <div id="message_bar" style="display: none;">
+                            <p style="margin:10px;margin-bottom:0;color:green;font-size:12px;">Form submitted successfully!</p>
+                        </div>
+                        
+                        <p style="color: #000; margin-top:10px; font-size:12px;" onclick="remind_me_later();">{{btftok_remindlater}}</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+$(document).ready(function() {
+    $('#subscribe_newsletter').on('submit', function(event) {
+        event.preventDefault();
+        $("#confirm_countr_languagu").attr('disabled', true);
+        let formData = $(this).serialize();
+        $.ajax({
+            url: 'index.php?route=pages/newsletter/submit_newsletter_form',
+            data: formData,
+            method:'POST',
+            success: function(response) {
+                $("#confirm_countr_languagu").attr('disabled', false);
+                if( response == 2 ) {
+                    alert("Email is already registered. Please use a different email.");
+                    $("#message_bar").hide();
+                    $("#message_bar p").html("");
+                } else {
+                    $("#message_bar").show(700);
+                    $("#message_bar p").html("Form submitted successfully!");
+                    $("#country_id_user_selection_main").val("");
+
+                    setTimeout(function() {
+                        createCustomCookie("custom_reminder", "custom_reminder", 60 * 60 * 24 * 365 * 20);
+                        $("#be_the_first_to_know").modal('hide');
+                    }, 4000);
+
+                }
+            }
+        });
+    });
+});
+</script>
+
+<script>
+{# $("#be_the_first_to_know").modal("show"); #}
+
+
+function createCustomCookie(name, value, seconds) {
+    var expires = "";
+    if (seconds) {
+        var date = new Date();
+        date.setTime(date.getTime() + (seconds * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + value + "; path=/" + expires;
+    $("#be_the_first_to_know").modal("hide");
+}
+
+{# function removeCustomCookie(name) {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+} #}
+
+function remind_me_later() {
+    createCustomCookie("custom_reminder", "custom_reminder", 3600); // Cookie set for 30 seconds
+    $("#be_the_first_to_know").modal("hide");
+}
+
+
+</script>
+
+
+<style>
+#currency_country_modal .modal-body {
+    margin: 150px auto;
+    max-width: 700px;
+    width: 100%;
+    
+}
+
+/* Make the modal dialog fullscreen */
+#currency_country_modal .modal-dialog {
+    width: 100vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    margin: 0; /* Remove margin */
+    display: flex;
+    align-items: stretch; /* Stretch modal content vertically */
+    justify-content: center; /* Center modal content horizontally */
+    
+}
+
+/* Remove max-width */
+#currency_country_modal .modal-content {
+    width: 100%;
+    height: 100%; /* Ensure the content takes full height */
+    {# display: flex;
+    flex-direction: column;
+    justify-content: space-between; #}
+    background-color: #000000ba;
+}
+
+/* Modal header, body, and footer styles */
+#currency_country_modal .modal-header,
+#currency_country_modal .modal-body,
+#currency_country_modal .modal-footer {
+    flex: 1; /* Allow the sections to stretch and fill available space */
+    overflow-y: auto; /* Ensure content is scrollable if it overflows */
+}
+
+#currency_country_modal .modal-header {
+    background-color: #ffffff36;
+}
+
+#currency_country_modal .modal-footer {
+    background-color: #f5f5f5;
+    text-align: center;
+}
+
+#be_the_first_to_know .modal-body {
+    margin: 150px auto;
+    max-width: 500px;
+    width: 95%;
+    
+}
+
+/* Make the modal dialog fullscreen */
+#be_the_first_to_know .modal-dialog {
+    width: 100vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    margin: 0; /* Remove margin */
+    display: flex;
+    align-items: stretch; /* Stretch modal content vertically */
+    justify-content: center; /* Center modal content horizontally */
+    
+}
+
+/* Remove max-width */
+#be_the_first_to_know .modal-content {
+    width: 100%;
+    height: 100%; /* Ensure the content takes full height */
+    {# display: flex;
+    flex-direction: column;
+    justify-content: space-between; #}
+    background-color: #000000ba;
+}
+
+/* Modal header, body, and footer styles */
+#be_the_first_to_know .modal-header,
+#be_the_first_to_know .modal-body,
+#be_the_first_to_know .modal-footer {
+    flex: 1; /* Allow the sections to stretch and fill available space */
+    overflow-y: auto; /* Ensure content is scrollable if it overflows */
+}
+
+#be_the_first_to_know .modal-header {
+    background-color: #ffffff36;
+}
+
+#be_the_first_to_know .modal-footer {
+    background-color: #f5f5f5;
+    text-align: center;
+}
+</style>
+
+
+<style>
+.select_country {
+    padding-right: 15px !important;
+}
+@media (max-width: 600px) {
+    .select_country {
+        padding-right: 0px !important;
+    }
+    .row .col-sm-6 {
+        margin-bottom: 15px;
+    }
+}
+</style>
+
+<div id="phone_verification_modal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+            <div class="modal-header">
+                {# <button type="button" class="close" data-dismiss="modal">&times;</button> #}
+                <h4 class="modal-title">{{number_verification_heading_text}}</h4>
+            </div>
+            <div class="modal-body" style="max-height: 300px; overflow:auto;">
+                <div class="pv-container">
+                    <div class="pv-text">
+                        <p id="user_details"></p>
+                        <p>
+                            {{ente_the_code_text}}
+                            <a href="index.php?route=account/edit">{{ente_the_code_click_here_text}}</a>
+                        </p>
+                    </div>
+                    <div class="pv-input">
+                        <label><strong>{{ente_verification_code_text}}</strong></label>
+                        <div class="pv-code">
+                            <div class="pv-input-field">
+                                <input id="phone_code" type="text" min="1000" max="9999" maxlength="4" name="phone_code" class="form-control" style="width: 140px;">
+                                <div class="pv-error" style="display: none;">Incorrect Code</div>
+                            </div>
+                            <div id="countdown_container" class="pv-resend">
+                                <span id="countdown_timer"></span>
+                            </div>
+
+                            <div id="resend_timer" class="pv-resend" onclick="resend()" style="cursor: pointer;text-decoration: underline;margin-top: 10px;">{{wrong_texr_code}}</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="codeVerificationProcess()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
+
+<script>
+function codeVerificationProcess() {
+  var phone_code = $("#phone_code").val();
+  if( phone_code > 0 ) {
+    $.ajax({
+      url: 'index.php?route=common/footer/codeVerificationProcess',
+      method: 'POST',
+      data: {'phone_code': phone_code},
+      success: function(data) {
+        if( data == 1 ) {
+            document.location = "index.php?route=account/account";
+        } else {
+          alert("{{wrong_texr_code}}");
+        }
+      }
+    });
+  } else {
+    alert("{{enter_verification_code}} 1000 - 9999")
+  }
+}
+
+ function userChangedCountryLanguageDefaultPopup() {
+        var country_id_user_selection = $("#country_id_user_selection option:selected").val();
+        var language_id_user_selection = $("#language_id_user_selection option:selected").val();
+
+        if( language_id_user_selection != "" && country_id_user_selection != "" ) {
+            $("#confirm_countr_languagu").attr("disabled", true);
+            $.ajax({
+                url: 'index.php?route=common/country/userChangedCountryLanguageDefaultPopup',
+                method: 'POST',
+                data: {'country_id_user_selection': country_id_user_selection, 'language_id_user_selection': language_id_user_selection},
+                success: function(data) {
+                    setCookie('currency_country_selection', '1', '1');
+                    document.location.reload();
+                }
+            });
+        } else {
+            alert("{{enter_verification_code}} 1000 - 9999")
+        }
+    }
+
+  $(document).ready(function() { 
+			
+        {# var notAllowedCountry = $("#notAllowedCountry").val();
+        var cookieval = getCookie('shipping_not_allowed');
+        if( notAllowedCountry == 1 ) {
+            if (cookieval != '1') {
+                $("#shippingModal").modal('show');
+            }
+        } #}
+
+
+        var currency_country_selection = getCookie('currency_country_selection');
+        
+        
+        var custom_reminder = getCookie('custom_reminder');
+        
+        if (currency_country_selection != '1') {
+            $("#currency_country_modal").modal('show');
+        } else {
+            if (custom_reminder != 'custom_reminder') {
+                $("#be_the_first_to_know").modal('show');
+            }
+        }
+			$(document).on("click", "#donotshowagain", function () {
+					setCookie('shipping_not_allowed', '1', '1');
+			});
+		});
+		
+		function setCookie(key, value, expiry) {
+			var expires = new Date();
+			expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
+			document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
+		}
+		
+		function getCookie(key) {
+			var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+			return keyValue ? keyValue[2] : null;
+		}
+
+        
+        
+
+
+        // Countdown timer function
+function startCountdown(seconds) {
+    var countdown = parseInt(seconds);
+    $("#resend_timer").hide(); // Hide resend timer initially
+    $("#countdown_container").show(); // Show countdown container initially
+    var timer = setInterval(function() {
+        countdown--;
+        document.getElementById("countdown_timer").innerText = " {{resending_in_text}}"+(countdown)+" {{resending_in_seconds_text}}";
+        if (countdown <= 0) {
+            clearInterval(timer);
+            $("#countdown_container").hide(); // Hide countdown container when countdown finishes
+            $("#resend_timer").show(); // Show resend timer when countdown finishes
+            document.getElementById("resend_timer").innerText = "{{wrong_texr_code}}"; // Change text after countdown finishes
+        }
+    }, 1000);
+}
+
+// Check if the cookie exists
+var lastSentTime = getCookie12("lastSentTime");
+if (lastSentTime) {
+    var currentTime = new Date().getTime();
+    var timeDifference = Math.floor((currentTime - lastSentTime) / 1000);
+    var remainingTime = 30 - timeDifference;
+    if (remainingTime > 0) {
+        // If there's remaining time, start the countdown from the remaining time
+        startCountdown(remainingTime);
+    } else {
+        // If the 30 seconds have passed, allow resending immediately
+        document.getElementById("resend_timer").innerHTML = "{{wrong_texr_code}}";
+    }
+} else {
+    // If the cookie doesn't exist, allow resending immediately
+    document.getElementById("resend_timer").innerHTML = "{{wrong_texr_code}}";
+}
+
+// Function to handle resending action
+function resend() {
+    setCookie12("lastSentTime", new Date().getTime(), 1);
+
+    $.ajax({
+      url: 'index.php?route=common/footer/resendPhoneVerification',
+      success: function(data) {
+        if( data == '0' || data == 0 ) {
+            document.location.reload();
+        }
+      }
+    });
+
+    startCountdown(30);
+}
+
+// Function to set a cookie
+function setCookie12(name, value, days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+// Function to get a cookie value
+function getCookie12(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) === " ") {
+            c = c.substring(1, c.length);
+        }
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+    
+    
+$('.cancel_btn').on('click', function(e) {
+    var order = $(this).data('orderid');
+    return confirm('Are you sure? You want to Cancel Order' + ' '+ order);  
+});
+
+document.querySelectorAll('.product_attributes_container img').forEach(img => {
+    img.removeAttribute('style');
+});
+
+$(document).ready(function() { 
+    if( $("#is_homepage").val() == 1 ) {
+        $(".third-menu").remove();
+        $(".desktop li.menu-item.top-menu-item.top-menu-item-1").remove();
+        {# $("li.menu-item.top-menu-item.top-menu-item-4.icon-only").remove(); #}
+        {# $("li.menu-item.top-menu-item.top-menu-item-6.icon-only").remove(); #}
+
+        $(document).ready(function() {
+            
+            var header = $('.desktop header.header-compact');
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 100) {
+                    header.hide();
+                } else {
+                    header.show();
+                }
+            });
+        });
+    } else {
+        var linkElement = $('<link>', {
+            rel: 'stylesheet',
+            type: 'text/css',
+            href: "{{ base }}catalog/view/theme/journal3/stylesheet/header.css"
+        });
+        $('head').append(linkElement);
+        $("div.header.header-compact #logo a").html('<img src="{{ base }}/image/catalog/custom/logo_black.png" width="300" height="23" alt="Emile Rassam" title="Emile Rassam">');
+        $(".mobile-header .mobile-bar #logo a").html('<img src="{{ base }}/image/catalog/custom/logo_black.png" width="300" height="23" alt="Emile Rassam" title="Emile Rassam">');
+    }
+});
+</script>

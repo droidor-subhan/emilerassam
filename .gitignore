@@ -1,0 +1,7 @@
+# Ignore system files and directories
+config.php
+admin/config.php
+system/storage/
+system/vendor/
+image/cache/
+image/catalog

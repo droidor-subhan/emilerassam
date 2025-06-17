@@ -1,0 +1,110 @@
+.top-menu .j-menu li a {
+    color: #000;
+}
+.mini-search .search-trigger {
+    color: #000;
+}
+div.header.header-compact .mini-search .search-trigger::before {
+    color: #000;
+}
+#cart>a>i::before{
+    color:#000;
+}
+div.header.header-compact .language_name_header_text {
+    color: #000;
+}
+.third-menu .top-menu .j-menu>li>a {
+    color: #000;
+}
+.top-menu-2 .j-menu li.top-menu-item-2>a:first-child {
+    color: #000;
+}
+.top-menu-2 .j-menu li.top-menu-item-6>a::before {
+    color: #000;
+}
+/* .top-menu-2 .j-menu .links-text {
+    color: #000;
+} */
+.top-menu-2 .j-menu li.top-menu-item-1>a:first-child {
+    color: #000;
+}
+.country-title {
+    color: #000;
+}
+.language_name_header_text:hover {
+    color: #000 !important;
+}
+
+.breadcrumb li:first-of-type a i::before {
+    content: 'Home' !important;
+    font-family: 'gill_sans_stdregular' !important;
+}
+.top-menu-2 .j-menu li.top-menu-item-4>a::before {
+    color: #000 !important;
+}
+
+
+.top-menu-13 .j-menu li.top-menu-item-1>a::before {
+    color: #000 !important;
+}
+
+.top-menu-13 .j-menu li.top-menu-item-1>a::before {
+    color: #000 !important;
+}
+/* .j-menu .links-text {
+    color: #000 !important;
+} */
+.top-menu-13 .j-menu li.top-menu-item-2>a::before{
+    color: #000 !important;
+}
+.mobile-header-active .currency .dropdown-toggle > span, .mobile-header-active .currency .dropdown::after{
+    color: #000 !important;
+}
+div.mobile-header .language_name_header_text{
+    color: #000 !important;
+}
+div.mobile-header .mini-search .search-trigger::before {
+    color: #000 !important;
+}
+.favourite_icon a span i::before {
+    color: #000 !important;
+}
+.mobile-header-active #cart>a>i::before {
+    color: #000 !important;
+}
+.mobile-header-active .top-menu .j-menu>li>a {
+    color: #000;
+}
+.top-menu-13 .j-menu li.top-menu-item-3>a::before {
+    color: #000;
+}
+.top-menu-2 .j-menu li.top-menu-item-18>a:first-child {
+    color: #000 !important;
+}
+.top-menu-2 .j-menu li.top-menu-item-18>a:first-child:hover {
+    color: #000 !important;
+}
+.top-menu-2 .j-menu li.top-menu-item-21>a::before {
+    color: #000 !important;
+}
+.top-menu-2 .j-menu li.top-menu-item-21>a::before:hover {
+    color: #000 !important;
+}
+
+.desktop .top-menu .j-menu > li:hover > a {
+    color: #000 !important;
+}
+
+.desktop .top-menu .dropdown.dropdown .j-menu > li:hover > a {
+    color: #FFF !important;
+}
+
+.desktop .top-menu-2 .j-menu li.top-menu-item-28>a::before {
+    color: #000 !important;
+}
+.desktop .top-menu-2 .j-menu li.top-menu-item-3>a:first-child {
+    color: #000 !important;
+}
+.desktop .top-menu-2 .j-menu li.top-menu-item-7>a::before {
+    color: #000 !important;
+}

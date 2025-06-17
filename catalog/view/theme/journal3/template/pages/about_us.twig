@@ -1,0 +1,448 @@
+{{ header }}
+
+
+{# ABOUT US SECTION STARTS HERE #}
+<h1 class="title page-title">
+	<span>{{about_us_title}}</span>
+</h1>
+
+
+
+<style>
+	{# * {
+		margin: 0px !important;
+		padding: 0px !important;
+	} #}
+	.main_full_width_container {
+		background-image: url("{{base_url}}{{content.image}}");
+		background-position: top left;
+		background-size: cover;
+		background-repeat: no-repeat;
+		width: 100%;
+		min-height: 28vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		text-align: center;
+		padding: 15px;
+		box-sizing: border-box;
+		gap: 20px;
+		color: #fff;
+	}
+	.main_full_width_container p {
+		color: #FFF;
+		font-size: 14px;
+		line-height: 18px;
+	}
+</style>
+
+<div class="main_full_width_container">
+	<div style="margin: auto;max-width: 900px;width: 100%;">
+		{{content.main_content}}
+	</div>
+</div>
+{# ABOUT US SECTION ENDS HERE #}
+
+
+{# COMPANY SECTION STARTS HERE #}
+<style>
+	/* Wrapper to contain the background fix */
+.company_main_full_width_container {
+    position: relative; /* Ensure the content inside the section is positioned correctly */
+    width: 100%;
+    min-height: 100vh; /* Ensure the section takes at least full viewport height */
+    padding: 300px 15px 0px 15px !important; /* Adjust padding as needed */
+    color: #fff;
+    text-align: center;
+    z-index: 1;
+}
+
+/* Background wrapper with clipping to control the fixed background */
+.company_main_full_width_container .bg-wrap {
+    clip: rect(0, auto, auto, 0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Fixed background styling */
+.company_main_full_width_container .bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("{{base_url}}{{content.company_image}}");
+    background-size: cover;
+    background-position: center 15px;
+    transform: translateZ(0);
+    will-change: transform;
+    z-index: -1; /* Ensure the background stays behind the content */
+}
+
+@media screen and (min-width: 1024px) {
+    .company_main_full_width_container .bg {
+        position: sticky;
+        height: 100vh;
+    }
+	.timeline_main_container {
+		background-color: #FFF !important;
+		
+	}
+}
+
+	.company_main_full_width_container p {
+		color: #FFF;
+		font-size: 16px;
+		line-height: 27px;
+	}
+</style>
+
+<div style="padding: 20px 15px;">
+	<h1 class="title page-title">
+		<span>{{company_title}}</span>
+	</h1>
+	<div class="text-center">
+		<p class="text-center">{{content.description}}</p>
+		<p class="text-center">{{content.sub_description}}</p>
+	</div>
+</div>
+
+<div class="company_main_full_width_container">
+	<div class="bg-wrap">
+        <div class="bg"></div>
+    </div>
+
+	{{content.sec_1_description}}
+
+	{{content.sec_2_description}}
+	
+	{{content.sec_3_description}}
+
+</div>
+{# COMPANY SECTION ENDS HERE #}
+
+
+{# MILESTONE SECTION STARTS HERE #}
+<style>
+	/* Wrapper to contain the fixed background for the milestone section */
+/* Wrapper to contain the fixed background for the milestone section */
+.milestone_main_full_width_container {
+    position: relative; /* Ensures content is positioned correctly */
+    width: 100%;
+    min-height: 100vh; /* Ensures the section takes at least the full viewport height */
+    color: #fff;
+    text-align: center;
+    z-index: 1;
+    {# margin-bottom: 50px; #}
+}
+
+
+
+/* Background wrapper with clipping for fixed background */
+.milestone_main_full_width_container .bg-wrap {
+    clip: rect(0, auto, auto, 0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Fixed background styling */
+.milestone_main_full_width_container .bg {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-image: url("{{base_url}}{{content.milestone_image}}");
+    background-size: cover;
+    background-position: top;
+    transform: translateZ(0);
+    will-change: transform;
+    z-index: -1;
+}
+	
+	@media screen and (max-width: 1023px) {
+		.milestone_main_full_width_container .bg {
+			background-image: url("{{base_url}}asset_3.jpg");
+			height: 100%;
+		}
+	}
+
+
+	.milestone_main_full_width_container {
+		color: #000;
+		font-size: 35px;
+	}
+
+	.timeline {
+		position: relative;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+	.timeline::after {
+		content: '';
+    position: absolute;
+    width: 1px;
+    background-color: #0000004d;
+    top: 15px;
+    bottom: 0;
+    left: 50%;
+    margin-left: -3px;
+	}
+
+	/* Container around content */
+	.container {
+		padding: 0;
+		position: relative;
+		width: 50%;
+		margin-right: 0;
+		margin-left: 0;
+		color: #7c7c7c;
+		cursor: pointer;
+		font-size: 22px;
+	}
+  .main_each_element:hover,
+  .main_each_element:focus,
+  .main_each_element:active,
+  .main_each_element:target
+   {
+    color: #000;
+    font-size: 35px;
+  }
+
+  .active_elem {
+    color: #000;
+    font-size: 35px;
+  }
+
+	/* The circles on the timeline */
+	.container::after {
+    content: '';
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    right: -1px;
+    background-color: #b2b2b2;
+    top: 8px;
+    z-index: 1;
+}
+
+	/* Place the container to the left */
+	.left {
+		left: 0;
+		{# margin-top: -5px; #}
+	}
+
+	/* Place the container to the right */
+	.right {
+		left: 50%;
+		{# margin-top: -5px; #}
+	}
+
+
+	/* Fix the circle for containers on the right side */
+	.right::after {
+		left: -6px;
+	}
+
+	/* The actual content */
+	.content {
+		padding: 20px 30px;
+		position: relative;
+		border-radius: 6px;
+
+	}
+
+	/* Media queries - Responsive timeline on screens less than 600px wide */
+	@media screen and(max-width: 600px) {
+		/* Place the timelime to the left */
+		.timeline::after {
+			left: 31px;
+		}
+
+		/* Full-width containers */
+		.container {
+			width: 100%;
+			padding-left: 70px;
+			padding-right: 25px;
+		}
+
+		/* Make sure that all arrows are pointing leftwards */
+		.container::before {
+			left: 60px;
+			border: medium solid white;
+			border-width: 10px 10px 10px 0;
+			border-color: transparent white transparent transparent;
+		}
+
+		/* Make sure all circles are at the same spot */
+		.left::after,
+		.right::after {
+			left: 15px;
+		}
+
+		/* Make all right containers behave like the left ones */
+		.right {
+			left: 0;
+		}
+	}
+
+	.left .content {
+		text-align: right;
+    padding: 0px 13px;
+	}
+  .main_each_element h2 {
+    margin: 0;
+    padding: 0;
+    color: inherit;
+	font-size: inherit;
+  }
+  .main_each_element p {
+    margin: 0;
+    padding: 0;
+    line-height: 13px;
+    color: inherit;
+    font-size: 12px;
+  }
+  .right .content {
+    text-align: left;
+    padding: 0px 7px;
+    margin-top: 4px;
+}
+.timeline_main_container {
+	margin: 0 auto;
+	max-width: 600px;
+	background-color: #ffffffb2;
+	width: 100%;
+	min-height: 700px;
+	padding-bottom:0px;
+	padding-top:15px;
+}
+</style>
+<div style="padding: 20px 0;">
+	<h1 class="title page-title">
+		<span>{{milestone_title}}</span>
+	</h1>
+</div>
+<script>
+
+    
+$(document).ready(function () {
+  let elements = $('.main_each_element');
+  let currentIndex = 0;
+  let interval;
+  let isClicked = false; // Flag to permanently stop auto activation after a click
+
+  // Scroll event listener to detect when the section comes into view
+  $(window).scroll(function () {
+    let sectionOffset = $('.milestone_main_full_width_container').offset().top; // Replace with your section's ID or class
+    let windowHeight = $(window).height();
+    let scrollPosition = $(window).scrollTop();
+
+    // Check if the section is visible in the viewport and no manual click has occurred
+    if (!isClicked && scrollPosition + windowHeight >= sectionOffset) {
+      startActivation();
+    }
+  });
+
+  // Function to start the activation effect
+  function startActivation() {
+    // Clear any existing interval
+    if (interval) {
+      clearInterval(interval);
+    }
+
+    // Function to activate the next element
+    function activateNextElement() {
+      elements.removeClass('active_elem'); // Remove class from all elements
+      elements.eq(currentIndex).addClass('active_elem'); // Add class to the current element
+      currentIndex++; // Move to the next element
+
+      // Reset to the first element if we reach the end
+      if (currentIndex >= elements.length) {
+        currentIndex = 200;
+      }
+    }
+
+    // Start activating elements at 1-second intervals
+    interval = setInterval(activateNextElement, 1000);
+  }
+
+  // Click event to stop auto activation permanently and highlight the clicked element
+  elements.click(function () {
+    isClicked = true; // Permanently disable auto activation
+
+    // Clear the interval to stop auto activation
+    if (interval) {
+      clearInterval(interval);
+    }
+
+    // Highlight the clicked element
+    elements.removeClass('active_elem'); // Remove class from all elements
+    $(this).addClass('active_elem'); // Add class to the clicked element
+  });
+});
+
+</script>
+<div class="milestone_main_full_width_container">
+	<div class="bg-wrap">
+        <div class="bg"></div>
+    </div>
+
+	<div class="timeline_main_container">
+		<div class="timeline">
+			
+			{% for entry in content.timeline %}
+				{% if loop.index is divisible by(2) %}
+					<div class="container main_each_element right">
+				{% else %}
+					<div class="container main_each_element left">
+				{% endif %}
+						<div class="content">
+							<h2>{{ entry.year }}</h2>
+							<p>{{ entry.data }}</p>
+						</div>
+					</div>
+			{% endfor %}
+			
+		</div>
+
+	</div>
+</div>
+
+ <script>
+$(document).ready(function(){
+	var my_posts = $("[rel=tooltip]");
+
+	var size = $(window).width();
+	for(i=0;i<my_posts.length;i++){
+		the_post = $(my_posts[i]);
+
+		if(the_post.hasClass('invert') && size >=767 ){
+			the_post.tooltip({ placement: 'left'});
+			the_post.css("cursor","pointer");
+		}else{
+			the_post.tooltip({ placement: 'rigth'});
+			the_post.css("cursor","pointer");
+		}
+	}
+});
+
+$(document).ready(function() {
+    var currentHeight = $('.timeline').height();
+	console.log('currentHeight Height:', currentHeight);
+	var newHeight = currentHeight + 50;
+	console.log('newHeight Height:', newHeight);
+	$('.timeline').height(newHeight);
+});
+
+</script>
+{# Milestone SECTION ENDS HERE #}
+
+
+{{ footer }}

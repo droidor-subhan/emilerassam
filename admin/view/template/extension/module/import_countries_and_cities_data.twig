@@ -1,0 +1,82 @@
+{{ header }}
+{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if success %}
+            <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}</div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-cogs"></i> {{ heading_title }}</h3>
+            </div>
+            <div class="panel-body">
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-file">{{ entry_file }}</label>
+                        <div class="col-sm-10">
+                            <input type="file" name="file" id="input-file" class="form-control">
+                            {% if error_file %}<div class="text-danger">{{ error_file }}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-primary submitButton" onclick="submitFunction()"><i class="fa fa-upload"></i> {{ button_save }}</button>
+                            <a href="{{ cancel }}" class="btn btn-default cancel_button"><i class="fa fa-reply"></i> {{ button_cancel }}</a>
+                        </div>
+                        <div class="col-sm-offset-2 col-sm-10 uploading_message" style="display: none; color: red; font-weight: bold;">
+
+                            <p class="uploading_message1" style="display: none;">The upload of the Country Cities/Zones File is in progress.</p>
+                            <p class="uploading_message2" style="display: none;">Please be patient.</p>
+                            <p class="uploading_message3" style="display: none;">Ensure that you do not interrupt the process and refrain from refreshing the page.</p>
+                            <p class="uploading_message4" style="display: none;">Remain on the page until the upload is completed.</p>
+                            <p class="uploading_message5" style="display: none;">Otherwise System may break. Thank you.</p>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{ footer }}
+
+<script>
+function submitFunction() {
+
+    $(".cancel_button").hide(700);
+    $(".uploading_message").show();
+
+    $(".uploading_message1").show(1500, function() {
+        $(".uploading_message2").show(1500, function() {
+            $(".uploading_message3").show(1500, function() {
+                $(".uploading_message4").show(1500, function() {
+                    $(".uploading_message5").show(1500, function() {
+                    
+                    });
+                });
+            });
+        });
+    });
+
+    
+
+
+
+    $(".submitButton").addClass("disabled");
+    $(".submitButton i").addClass("fa-refresh");
+    $(".submitButton i").addClass("fa-spin");
+
+    $(".submitButton i").removeClass("fa-upload");
+}
+</script>

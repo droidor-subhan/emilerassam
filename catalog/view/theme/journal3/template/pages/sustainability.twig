@@ -1,0 +1,236 @@
+{{ header }}
+<h1 class="title page-title">
+	<span>Sustainability</span>
+</h1>
+
+{# COMPANY SECTION STARTS HERE #}
+<style>
+.company_main_full_width_container {
+    position: relative;
+    width: 100%;
+    padding: 40px 0px 40px 0px !important;
+    color: #fff;
+    text-align: center;
+    z-index: 1;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.company_main_full_width_container .bg-wrap {
+    clip: rect(0, auto, auto, 0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.company_main_full_width_container .bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("{{base_url}}{{content.company_image}}");
+    background-size: contain;
+    background-position: center 0px;
+    transform: translateZ(0);
+    will-change: transform;
+    z-index: -1;
+    background-repeat: no-repeat;
+}
+
+@media screen and (min-width: 1024px) {
+    .company_main_full_width_container .bg {
+        position: sticky;
+        height: 70vh;
+    }
+}
+@media screen and (max-width: 1024px) {
+    .company_main_full_width_container .bg {
+        /*background-size: cover;*/
+        background-size: 90%;
+        background-position: center center !important;
+    }
+}
+@media screen and (max-width: 768px) {
+    .company_main_full_width_container .bg {
+        background-size: 100%;
+        background-position: center;
+    }
+    .custom_row_padding {
+        padding: 0 10px !important;
+    }
+}
+.company_main_full_width_container p {
+    color: #000;
+    font-size: 17px;
+    line-height: 20px;
+}
+.timeline_main_container {
+    margin: 0 auto;
+    max-width: 1024px;
+    width: 100%;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 13px !important;
+}
+.each_image_main {
+    /*width: 100%;
+    height: 100%;*/
+}
+.customcol {
+    padding: 5px !important;
+}
+.custom_row_padding {
+    position: relative;
+    padding: 0 27px;
+}
+</style>
+
+{# <div style="padding: 20px 15px;">
+	<h1 class="title page-title">
+		<span>{{company_title}}</span>
+	</h1>
+	<div class="text-center">
+		<p class="text-center">{{content.description}}</p>
+		<p class="text-center">{{content.sub_description}}</p>
+	</div>
+</div> #}
+
+<div class="company_main_full_width_container">
+	<div class="row custom_row_padding">
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/1_poverty.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/2_zero_hunger.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/3_good_heakth.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/4_quality_edu.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/5_gender.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/6_clean_water.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/7_afford.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/8_decent.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/9_industry.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/10_reduce.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/11_sustainable.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/12_responsible.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/13_climate.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/14_life.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/15_life_on_land.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/16_peace.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 customcol">
+            <img src="{{base_url}}{{'sustainability/17_partnership.jpg'}}" class="each_image_main" />
+        </div>
+        <div class="timeline_main_container">
+            {{content.sec_1_description}}
+        </div>
+        
+    </div>
+
+    
+
+</div>
+
+
+
+<style>
+.company_main_full_width_container_2 {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px 15px 0px 15px !important;
+    color: #fff;
+    text-align: center;
+    z-index: 1;
+    margin-top: 0px;
+    margin-bottom: 40px;
+}
+.company_main_full_width_container_2 .bg-wrap {
+    clip: rect(0, auto, auto, 0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.company_main_full_width_container_2 .bg {
+     position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("{{base_url}}{{content.company_image_2}}");
+    background-size: cover;
+    background-position: center 0px;
+    transform: translateZ(0);
+    will-change: transform;
+    z-index: -1;
+    background-repeat: no-repeat;
+}
+
+@media screen and (min-width: 1024px) {
+    .company_main_full_width_container_2 .bg {
+        {# position: sticky; #}
+        height: 100%;
+    }
+}
+
+.company_main_full_width_container_2 p {
+    color: #FFF;
+    font-size: 16px;
+    line-height: 17px;
+}
+.timeline_main_container_2 {
+	margin: 0 auto;
+	max-width: 1024px;
+	width: 100%;
+}
+</style>
+<div class="company_main_full_width_container_2">
+	<div class="bg-wrap">
+        <div class="bg"></div>
+    </div>
+
+    <div class="timeline_main_container_2">
+        {{content.sec_2_description}}
+    </div>
+
+</div>
+{# COMPANY SECTION ENDS HERE #}
+
+{{ footer }}
+<script>
+    $(document).ready(function () {
+        document.title = "Emile Rassam | Sustainability";
+    });
+</script>
