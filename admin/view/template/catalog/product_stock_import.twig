@@ -1,0 +1,334 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                <li><a href="{{ home }}">{{ text_home }}</a></li>
+                <li><a href="{{ catalog }}">{{ text_catalog }}</a></li>
+                <li><a href="{{ cancel }}">{{ text_product_stock }}</a></li>
+                <li class="active">{{ heading_title }}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if error_warning %}
+            <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        {% if success %}
+            <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+
+        <!-- Import Result Alert (Hidden by default) -->
+        <div id="import-result" style="display: none;"></div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-upload"></i> {{ heading_title }}</h3>
+            </div>
+            <div class="panel-body">
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-import" class="form-horizontal">
+                    <input type="hidden" name="user_token" value="{{ user_token }}" />
+
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <div class="alert alert-info">
+                                <h4><i class="fa fa-info-circle"></i> Import Instructions</h4>
+                                <p>{{ text_import_description }}</p>
+                                <ul class="text-left">
+                                    <li>CSV file must contain headers: <strong>Product ID, Product name, Size, Color, Size-Color quantity</strong></li>
+                                    <li>Only valid products with existing size and color options will be updated</li>
+                                    <li>Size Color quantity must be a non-negative integer</li>
+                                    <li>Maximum file size: 5MB</li>
+                                    <li>Supported formats: CSV (.csv)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <div class="alert alert-warning">
+                                <h4 style="color: Black"><i class="fa fa-warning"></i> Sample CSV Format</h4>
+                                <pre><u>Product ID</u>   <u>Product name</u>       <u>Size</u>   <u>Color</u>   <u>Size-Color quantity</u>
+    123     Sample Product       M     Black             5
+    124     Another Product      L     Red               3
+    124     Another Product      L     White             6
+    125     Test Product         XL    Navy Blue         10
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-import-file">{{ entry_import_file }}</label>
+                        <div class="col-sm-10">
+                            <input type="file" name="import_file" id="input-import-file" class="form-control" accept=".csv" required />
+                            <div class="help-block">Select a CSV file containing product stock data to import.</div>
+                        </div>
+                    </div>
+
+{#                    <div class="form-group">#}
+{#                        <div class="col-sm-offset-2 col-sm-10">#}
+{#                            <div class="checkbox">#}
+{#                                <label>#}
+{#                                    <input type="checkbox" name="validate_only" value="1" id="validate-only" />#}
+{#                                    Validate only (don't import - just check for errors)#}
+{#                                </label>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+                </form>
+
+                <div class="text-center">
+                    <button type="button" id="btn-import" class="btn btn-success btn-lg">
+                        <i class="fa fa-upload"></i> {{ button_import }}
+                    </button>
+{#                    <button type="button" id="btn-validate" class="btn btn-warning btn-lg" style="margin-left: 10px;">#}
+{#                        <i class="fa fa-check"></i> Validate Only#}
+{#                    </button>#}
+                </div>
+
+                <!-- Progress Bar -->
+                <div id="progress-container" style="margin-top: 20px; display: none;">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 0%">
+                            <span class="sr-only">0% Complete</span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <small id="progress-text">Processing...</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var import_url = 'index.php?route=catalog/product_stock/import&user_token={{ user_token }}';
+
+    $('#btn-import').on('click', function() {
+        $('#validate-only').prop('checked', false);
+        submitImport();
+    });
+
+    $('#btn-validate').on('click', function() {
+        $('#validate-only').prop('checked', true);
+        submitImport();
+    });
+
+    function submitImport(confirmZeros = true) {
+        var fileInput = $('#input-import-file')[0];
+
+        if (fileInput.files.length === 0) {
+            showAlert('danger', 'Please select a CSV file to upload.');
+            return false;
+        }
+
+        var file = fileInput.files[0];
+
+        if (file.size > 5242880) {
+            showAlert('danger', 'File size exceeds the maximum limit of 5MB.');
+            return false;
+        }
+
+        if (!file.name.toLowerCase().endsWith('.csv')) {
+            showAlert('danger', 'Please select a CSV file.');
+            return false;
+        }
+
+        var validateOnly = $('#validate-only').is(':checked');
+        var buttonText = validateOnly ? 'Validating...' : 'Importing...';
+
+        showProgress(buttonText);
+
+        var formData = new FormData();
+        formData.append('import_file', file);
+        formData.append('user_token', '{{ user_token }}');
+        if (validateOnly) {
+            formData.append('validate_only', '1');
+        }
+        if (confirmZeros) {
+            formData.append('confirm_zeros', '1');
+        }
+
+        $.ajax({
+            url: import_url,
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            cache: false,
+            timeout: 60000,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhr.setRequestHeader('X-OCTOKEN', '{{ user_token }}');
+            },
+            success: function(json) {
+                hideProgress();
+
+                // Handle confirmation required
+                if (json.confirm_required && json.confirm_message) {
+                    showConfirmationDialog(json.confirm_message, json.zero_details || [], function() {
+                        // User confirmed - resubmit with confirm_zeros flag
+                        submitImport(true);
+                    });
+                    return;
+                }
+
+                if (json.success) {
+                    showAlert('success', json.success);
+                    if (!validateOnly) {
+                        $('#form-import')[0].reset();
+                    }
+                } else if (json.warning) {
+                    showAlert('warning', json.warning);
+                } else if (json.error) {
+                    showAlert('danger', json.error);
+                } else {
+                    showAlert('danger', 'An unexpected error occurred.');
+                }
+            },
+            error: function(xhr, status, error) {
+                hideProgress();
+
+                if (xhr.status === 0) {
+                    showAlert('danger', 'Network error. Please check your connection and try again.');
+                } else if (xhr.status === 403) {
+                    showAlert('danger', 'Access denied. Please refresh the page and login again.');
+                } else if (xhr.status === 413) {
+                    showAlert('danger', 'File too large. Please select a smaller file.');
+                } else if (xhr.status === 500) {
+                    showAlert('danger', 'Server error. Please try again later.');
+                } else if (status === 'timeout') {
+                    showAlert('danger', 'Request timeout. Please try again.');
+                } else if (status === 'parsererror') {
+                    if (xhr.responseText && xhr.responseText.includes('Please enter your login details')) {
+                        showAlert('danger', 'Your session has expired. Please <a href="javascript:location.reload();">refresh the page</a> and login again.');
+                    } else {
+                        showAlert('danger', 'Invalid response from server.');
+                    }
+                } else {
+                    showAlert('danger', 'An error occurred: ' + error + ' (Status: ' + xhr.status + ')');
+                }
+            }
+        });
+    }
+
+    // function showConfirmationDialog(message, details, onConfirm) {
+    //     // Create modal HTML
+    //     var detailsList = '';
+    //     if (details && details.length > 0) {
+    //         detailsList = '<div style="margin-top: 15px;"><strong>Items that will be set to zero:</strong><ul style="margin-top: 10px; padding-left: 20px;">';
+    //         details.forEach(function(detail) {
+    //             detailsList += '<li style="margin-bottom: 5px;"><i class="fa fa-warning text-warning"></i> ' + detail + '</li>';
+    //         });
+    //         detailsList += '</ul></div>';
+    //     }
+    //
+    //     var modalHtml = '<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel">' +
+    //         '<div class="modal-dialog" role="document">' +
+    //         '<div class="modal-content">' +
+    //         '<div class="modal-header">' +
+    //         '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+    //         '<span aria-hidden="true">&times;</span>' +
+    //         '</button>' +
+    //         '<h4 class="modal-title" id="confirmationModalLabel">' +
+    //         '<i class="fa fa-exclamation-triangle text-warning"></i> ' +
+    //         'Confirmation Required' +
+    //         '</h4>' +
+    //         '</div>' +
+    //         '<div class="modal-body">' +
+    //         '<p><strong>' + message + '</strong></p>' +
+    //         detailsList +
+    //         '</div>' +
+    //         '<div class="modal-footer">' +
+    //         '<button type="button" class="btn btn-default" data-dismiss="modal">' +
+    //         '<i class="fa fa-times"></i> Cancel' +
+    //         '</button>' +
+    //         '<button type="button" class="btn btn-danger" id="confirmProceed">' +
+    //         '<i class="fa fa-check"></i> Yes, Continue Import' +
+    //         '</button>' +
+    //         '</div>' +
+    //         '</div>' +
+    //         '</div>' +
+    //         '</div>';
+    //
+    //     // Remove existing modal if any
+    //     $('#confirmationModal').remove();
+    //
+    //     // Add modal to body
+    //     $('body').append(modalHtml);
+    //
+    //     // Show modal
+    //     $('#confirmationModal').modal('show');
+    //
+    //     // Handle confirm button click
+    //     $('#confirmProceed').on('click', function() {
+    //         $('#confirmationModal').modal('hide');
+    //         onConfirm();
+    //     });
+    //
+    //     // Clean up modal after hiding
+    //     $('#confirmationModal').on('hidden.bs.modal', function() {
+    //         $(this).remove();
+    //     });
+    // }
+
+    function showProgress(text) {
+        $('#btn-import, #btn-validate').prop('disabled', true);
+        $('#progress-container').show();
+        $('#progress-text').text(text);
+
+        var progress = 0;
+        var interval = setInterval(function() {
+            progress += Math.random() * 15;
+            if (progress > 90) progress = 90;
+            $('.progress-bar').css('width', progress + '%');
+        }, 200);
+
+        $('#progress-container').data('interval', interval);
+    }
+
+    function hideProgress() {
+        $('#btn-import, #btn-validate').prop('disabled', false);
+        $('#progress-container').hide();
+        $('.progress-bar').css('width', '0%');
+
+        var interval = $('#progress-container').data('interval');
+        if (interval) {
+            clearInterval(interval);
+        }
+    }
+
+    function showAlert(type, message) {
+        var alertClass = 'alert-' + type;
+        var iconClass = type === 'success' ? 'fa-check-circle' :
+            type === 'warning' ? 'fa-exclamation-triangle' :
+                type === 'danger' ? 'fa-exclamation-circle' : 'fa-info-circle';
+
+        var alertHtml = '<div class="alert ' + alertClass + ' alert-dismissible">' +
+            '<i class="fa ' + iconClass + '"></i> ' + message +
+            '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+            '</div>';
+
+        $('#import-result').html(alertHtml).show();
+
+        if (type === 'success') {
+            setTimeout(function() {
+                $('#import-result .alert-success').fadeOut();
+            }, 5000);
+        }
+
+        $('html, body').animate({
+            scrollTop: $('#import-result').offset().top - 100
+        }, 500);
+    }
+</script>
+{{ footer }}
