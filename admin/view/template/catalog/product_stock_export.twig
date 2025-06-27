@@ -1,0 +1,307 @@
+{% block content %}
+  {{ header }}
+  {{ column_left }}
+
+  <div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-download"></i> Export Product Stock</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="export_product_stock" class="form-horizontal">
+
+          <!-- Product Selection Section -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="products-dropdown">
+              <span class=""></span> Select Products
+            </label>
+            <div class="col-sm-10">
+              <div class="dropdown-container">
+                <select id="products-dropdown" name="selected_products[]" multiple class="form-control select2-dropdown">
+                  {% for product in products %}
+                    <option value="{{ product.product_id }}">{{ product.product_name ? product.product_name : 'No name (ID: ' ~ product.product_id ~ ')' }}</option>
+                  {% endfor %}
+                </select>
+                <div class="select-actions">
+                  <a id="select-all-products" href="javascript:void(0);" class="select-link">Select All Products</a>
+                  <a id="deselect-products" href="javascript:void(0);" class="select-link" style="display: none;">Deselect</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Export Information Section -->
+          <div class="form-group">
+            <div class="col-sm-12">
+              <div class="export-info-panel">
+                <div class="info-header">
+                  <h4><i class="fa fa-info-circle"></i> Export Information</h4>
+                </div>
+                <div class="info-content">
+                  <p>{{ text_export_description }}</p>
+                  <div class="columns-info">
+                    <p class="columns-title">The CSV file will contain the following columns:</p>
+                    <div class="columns-list">
+                      <span class="column-item">Product ID</span>
+                      <span class="column-item">Product name</span>
+                      <span class="column-item">Size</span>
+                      <span class="column-item">Color</span>
+                      <span class="column-item">Size-Color quantity</span>
+{#                      <span class="column-item">Product Total quantity</span>#}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Export Button Section -->
+          <div class="form-group">
+            <div class="col-sm-12 text-center">
+              <button type="submit" name="export_csv" value="export_csv" class="btn btn-primary btn-lg export-btn">
+                <i class="fa fa-download"></i> {{ button_export }}
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- CSS Styles -->
+  <style>
+    .dropdown-container {
+      position: relative;
+    }
+
+    .select2-dropdown {
+      min-height: 40px;
+    }
+
+    .select2-container {
+      width: 100% !important;
+    }
+
+    .select2-container--default .select2-selection--multiple {
+      min-height: 40px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 5px;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+      background-color: #337ab7;
+      border: 1px solid #2e6da4;
+      color: Black;
+      padding: 2px 8px;
+      margin: 2px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+      color: Black;
+      margin-right: 5px;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+      color: Black;
+    }
+
+    .select-actions {
+      margin-top: 8px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .select-link {
+      color: #337ab7;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .select-link:hover {
+      color: #23527c;
+      text-decoration: underline;
+    }
+
+    .export-info-panel {
+      background-color: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 6px;
+      margin-top: 20px;
+      overflow: hidden;
+    }
+
+    .info-header {
+      background-color: #e9ecef;
+      padding: 15px 20px;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .info-header h4 {
+      margin: 0;
+      color: #495057;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .info-header i {
+      color: #6c757d;
+      margin-right: 8px;
+    }
+
+    .info-content {
+      padding: 20px;
+    }
+
+    .info-content p {
+      margin-bottom: 15px;
+      color: #6c757d;
+      line-height: 1.6;
+    }
+
+    .columns-info {
+      margin-top: 15px;
+    }
+
+    .columns-title {
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 10px;
+    }
+
+    .columns-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .column-item {
+      background-color: #007bff;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .export-btn {
+      padding: 12px 40px;
+      font-size: 16px;
+      font-weight: 600;
+      min-width: 200px;
+      margin-top: 20px;
+    }
+
+    .export-btn i {
+      margin-right: 8px;
+    }
+
+    .required {
+      color: #e74c3c;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .columns-list {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .export-btn {
+        width: 100%;
+        min-width: auto;
+      }
+    }
+  </style>
+
+  <!-- Include Select2 CSS and JS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+  <!-- JavaScript -->
+  <script>
+    $(document).ready(function() {
+      // Initialize Select2
+      $('#products-dropdown').select2({
+        placeholder: "Select products...",
+        allowClear: true,
+        closeOnSelect: false,
+        width: '100%'
+      });
+
+      // Select All Products functionality
+      $('#select-all-products').on('click', function() {
+        // Select all options
+        $('#products-dropdown').val($('#products-dropdown option').map(function() {
+          return $(this).val();
+        }).get()).trigger('change');
+
+        // Show deselect button, hide select all
+        $(this).hide();
+        $('#deselect-products').show();
+      });
+
+      // Deselect Products functionality
+      $('#deselect-products').on('click', function() {
+        // Clear all selections
+        $('#products-dropdown').val([]).trigger('change');
+
+        // Show select all button, hide deselect
+        $(this).hide();
+        $('#select-all-products').show();
+      });
+
+      // Handle manual selection changes
+      $('#products-dropdown').on('change', function() {
+        var selectedCount = $(this).val() ? $(this).val().length : 0;
+        var totalCount = $('#products-dropdown option').length;
+
+        if (selectedCount === 0) {
+          // No products selected - show "Select All"
+          $('#select-all-products').show();
+          $('#deselect-products').hide();
+        } else if (selectedCount === totalCount) {
+          // All products selected - show "Deselect"
+          $('#select-all-products').hide();
+          $('#deselect-products').show();
+        } else {
+          // Some products selected - show "Deselect"
+          $('#select-all-products').hide();
+          $('#deselect-products').show();
+        }
+      });
+
+      // Form submission handling
+      $('#export_product_stock').on('submit', function(e) {
+        // Allow form submission regardless of selection
+        // If no products selected, export all products (handled by backend)
+        return true;
+      });
+
+      // Initialize tooltips
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+  </script>
+
+  {{ footer }}
+{% endblock %}
